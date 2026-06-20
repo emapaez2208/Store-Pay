@@ -38,10 +38,16 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private Email email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private Long phoneNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id", nullable = false)
     private StoreEntity store;
+
+    @PrePersist
+    void onCreate(){
+        if(externalId == null)
+            externalId = UUID.randomUUID();
+    }
 }

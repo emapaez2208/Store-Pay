@@ -18,8 +18,9 @@ public record UserRequest(@NotBlank(message = "The name cannot be null or blank"
                           String dni,
                           @NotNull
                           Email email,
+                          @NotNull
                           @Positive(message = "The phone number must be a valid number.")
-                          @Max(value = 11, message = "The phone number must have a maximum of 11 digits.")
+                          @Max(value = 99999999999L, message = "The phone number must have a maximum of 11 digits.")
                           Long phoneNumber,
                           @NotNull(message = "The store cannot be null")
                           UUID store) {
