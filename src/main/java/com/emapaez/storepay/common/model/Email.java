@@ -1,5 +1,6 @@
 package com.emapaez.storepay.common.model;
 
+import com.emapaez.storepay.common.exception.EmailInvalidException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
@@ -14,7 +15,7 @@ public record Email(String value) {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public Email(String value) {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException("Invalid email format: " + value);
+            throw new EmailInvalidException("Invalid email format: " + value);
         }
         this.value = value;
     }
