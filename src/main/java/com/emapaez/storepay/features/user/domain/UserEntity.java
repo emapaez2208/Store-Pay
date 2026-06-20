@@ -25,13 +25,13 @@ public class UserEntity {
     @Column(name = "external_id", unique = true, nullable = false, updatable = false)
     private UUID externalId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 10)
     private String dni;
 
     @Embedded
@@ -41,7 +41,7 @@ public class UserEntity {
     @Column(name = "phone_number")
     private Long phoneNumber;
 
-    @OneToMany
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id", nullable = false)
     private StoreEntity store;
 }

@@ -1,8 +1,10 @@
 package com.emapaez.storepay.features.store.domain;
 
+import com.emapaez.storepay.features.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,4 +21,16 @@ public class StoreEntity {
 
     @Column(name = "external_id", unique = true, nullable = false, updatable = false)
     private UUID externalId;
+
+    @Column(nullable = false, length = 30)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String cuit;
+
+    @Column(length = 200)
+    private String description;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    private List<UserEntity> users;
 }
