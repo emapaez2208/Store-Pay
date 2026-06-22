@@ -9,19 +9,27 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface StoreMapper {
 
+    @Mapping(target = "cuit", qualifiedByName = "mapCuitToEntity")
     StoreEntity toEntity(StoreRequest request);
 
-    @Mapping(target = "cuit", source = "cuit", qualifiedByName = "mapCuit")
+    @Mapping(target = "cuit", qualifiedByName = "mapCuitToDto")
     StoreResponse toDto(StoreEntity entity);
 
 
-    @Named("mapCuit")
+    @Named("mapCuitToDto")
     default String mapCuit(String cuit){
         if(cuit == null)
             return null;
-
         return cuit.substring(0, 2) + "-"
                 + cuit.substring(2, 10) + "-"
                 + cuit.substring(10);
+    }
+
+    @Named("mapCuitToEntity")
+    default String mapCuitToEntity(String cuit){
+        if(cuit == null)
+            return null;
+
+        return cuit.replaceAll("\\D", "");
     }
 }

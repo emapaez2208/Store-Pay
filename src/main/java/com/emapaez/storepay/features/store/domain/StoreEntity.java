@@ -26,14 +26,13 @@ public class StoreEntity {
     @Column(nullable = false, length = 30, unique = true)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 11)
     private String cuit;
 
     @Column(length = 200, nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
-    @Column(nullable = false)
     private List<UserEntity> users;
 
     @PrePersist
