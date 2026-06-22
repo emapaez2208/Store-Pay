@@ -2,18 +2,22 @@ package com.emapaez.storepay.features.user.domain.dto;
 
 import com.emapaez.storepay.common.model.Email;
 import com.emapaez.storepay.common.validAnotation.ValidDni;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
 
 import java.util.UUID;
 
-public record UserUpdate(@NotBlank(message = "The name cannot be null or blank")
+public record UserUpdate(@Schema(description = "The user's name, max length: 50", example = "John", maxLength = 50, required = true)
+                         @NotBlank(message = "The name cannot be null or blank")
+                         @Size(max = 50, message = "The name must have a maximum length of 50 characters.")
                          String name,
-                         @NotBlank(message = "The last name cannot be null or blank.")
+                         @Schema(description = "The user's last name, max length: 50", example = "Doe", maxLength = 50, required = true)
+                         @NotBlank(message = "The last name cannot be null or blank")
+                         @Size(max = 50, message = "The last name must have a maximum length of 50 characters.")
                          String lastName,
+                         @Schema(description = "The user's phone number", example = "2235456789", required = true)
+                         @NotNull(message = "The phone number cannot be null")
                          @Positive(message = "The phone number must be a valid number.")
-                         @Max(value = 11, message = "The phone number must have a maximum of 11 digits.")
+                         @Max(value = 99999999999L, message = "The phone number must have a maximum of 11 digits.")
                          Long phoneNumber) {
 }
