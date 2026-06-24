@@ -1,11 +1,8 @@
 package com.emapaez.storepay.features.user.domain.dto;
 
-import com.emapaez.storepay.common.model.Email;
-import com.emapaez.storepay.common.validAnotation.ValidDni;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
-import java.util.UUID;
 
 public record UserUpdate(@Schema(description = "The user's name, max length: 50", example = "John", maxLength = 50, required = true)
                          @NotBlank(message = "The name cannot be null or blank")

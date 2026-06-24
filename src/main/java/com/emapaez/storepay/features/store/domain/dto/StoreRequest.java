@@ -1,10 +1,8 @@
 package com.emapaez.storepay.features.store.domain.dto;
 
 import com.emapaez.storepay.common.validAnotation.ValidCuit;
-import com.emapaez.storepay.features.user.domain.dto.UserRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record StoreRequest(

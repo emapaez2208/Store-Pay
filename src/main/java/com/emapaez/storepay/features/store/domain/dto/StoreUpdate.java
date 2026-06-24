@@ -1,6 +1,5 @@
 package com.emapaez.storepay.features.store.domain.dto;
 
-import com.emapaez.storepay.common.validAnotation.ValidCuit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
