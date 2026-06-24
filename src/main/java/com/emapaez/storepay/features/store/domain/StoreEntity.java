@@ -32,14 +32,19 @@ public class StoreEntity {
     @Column(length = 200, nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private Boolean enable;
+
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<UserEntity> users;
+
+
 
     @PrePersist
     void onCreate(){
         if(externalId == null)
             externalId = UUID.randomUUID();
-        if(users.isEmpty())
-            users = new ArrayList<>();
+        if(enable == null)
+            enable = true;
     }
 }
