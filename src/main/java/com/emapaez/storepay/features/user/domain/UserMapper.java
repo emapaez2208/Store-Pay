@@ -6,10 +6,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
     @Mapping(target = "dni", source = "dni", qualifiedByName = "mapDniToEntity")
+    @Mapping(target = "store", ignore = true)
     UserEntity toEntity(UserRequest request);
 
     @Mapping(target = "store", source = "store.name")
