@@ -1,6 +1,8 @@
 package com.emapaez.storepay.features.store.exception;
 
-public class StoreExistsWithNameException extends RuntimeException {
+import com.emapaez.storepay.common.exception.EntityExistsWithAtributeException;
+
+public class StoreExistsWithNameException extends EntityExistsWithAtributeException {
     public StoreExistsWithNameException(String message) {
         super(message);
     }

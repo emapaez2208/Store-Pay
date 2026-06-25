@@ -1,8 +1,8 @@
 package com.emapaez.storepay.features.user.exception;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.emapaez.storepay.common.exception.EntityNotFoundCustomException;
 
-public class UserNotFoundException extends EntityNotFoundException {
+public class UserNotFoundException extends EntityNotFoundCustomException {
     public UserNotFoundException(String message) {
         super(message);
     }

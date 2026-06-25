@@ -1,6 +1,8 @@
 package com.emapaez.storepay.features.user.exception;
 
-public class UserExistsWithDniException extends RuntimeException {
+import com.emapaez.storepay.common.exception.EntityExistsWithAtributeException;
+
+public class UserExistsWithDniException extends EntityExistsWithAtributeException {
     public UserExistsWithDniException(String message) {
         super(message);
     }
