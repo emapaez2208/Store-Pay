@@ -1,4 +1,4 @@
-package com.emapaez.storepay.features.productCategory.dto;
+package com.emapaez.storepay.features.productCategory.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

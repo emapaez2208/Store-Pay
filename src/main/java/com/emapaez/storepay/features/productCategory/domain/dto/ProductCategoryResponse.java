@@ -1,4 +1,4 @@
-package com.emapaez.storepay.features.productCategory.dto;
+package com.emapaez.storepay.features.productCategory.domain.dto;
 
 import java.util.UUID;
 

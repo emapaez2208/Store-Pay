@@ -9,7 +9,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface StoreMapper {
 
-    @Mapping(target = "cuit", qualifiedByName = "mapCuitToEntity")
+    @Mapping(target = "cuit", source = "cuit", qualifiedByName = "mapCuitToEntity")
     StoreEntity toEntity(StoreRequest request);
 
     @Mapping(target = "cuit", qualifiedByName = "mapCuitToDto")
