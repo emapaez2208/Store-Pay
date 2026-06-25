@@ -21,5 +21,5 @@ public record ProductRequest(@Schema(description = "The product name, max length
                              BigDecimal price,
                              @Schema(description = "The externalId of product category.", example = "123e4567-e89b-12d3-a456-426614174000", required = true)
                              @NotNull(message = "The product category cannot be null.")
-                             UUID productCategory) {
+                             String productCategory) {
 }

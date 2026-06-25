@@ -26,9 +26,8 @@ public class ProductCategoryEntity {
     @Column(nullable = false, length = 30, unique = true)
     private String name;
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 200)
     private String description;
-
 
     @PrePersist
     void onCreate(){

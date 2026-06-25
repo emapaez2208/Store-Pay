@@ -8,8 +8,7 @@ public record ProductCategoryRequest (@Schema(description = "The product categor
                                       @NotBlank(message = "The name cannot be null or blank.")
                                       @Size(max = 30, message = "The name must be a maximum of 30 characters.")
                                       String name,
-                                      @Schema(description = "Product category description, max length: 200", example = "beverages for nutritional hydration.", maxLength = 200, required = true)
-                                      @NotBlank(message = "The description cannot be null or blank.")
+                                      @Schema(description = "Product category description, max length: 200", example = "beverages for nutritional hydration.", maxLength = 200)
                                       @Size(max = 200, message = "The description must be a maximum of 200 characters.")
                                       String description){
 }

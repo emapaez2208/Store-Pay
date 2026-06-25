@@ -38,4 +38,10 @@ public class ProductEntity {
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategoryEntity productCategory;
 
+
+    @PrePersist
+    void onCreate(){
+        if(externalId == null)
+            externalId = UUID.randomUUID();
+    }
 }
