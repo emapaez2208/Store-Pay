@@ -14,11 +14,11 @@ public record ProductRequest(@Schema(description = "The product name, max length
                              @NotBlank(message = "The description cannot be null or blank.")
                              @Size(max = 200, message = "The description must be a maximum of 200 characters.")
                              String description,
-                             @Schema(description = "The price to product, price can contain a maximum of 8 digits before the decimal point and 2 digits after it", example = "110.99", required = true)
-                             @NotNull(message = "Price is required")
-                             @PositiveOrZero(message = "Price must be a positive value")
-                             @Digits(integer = 8, fraction = 2, message = "Price can contain a maximum of 8 digits before the decimal point and 2 digits after it")
-                             BigDecimal price,
+                             @Schema(description = "The suggested price to product, price can contain a maximum of 8 digits before the decimal point and 2 digits after it", example = "110.99", required = true)
+                             @NotNull(message = "suggested price is required")
+                             @PositiveOrZero(message = "suggested price must be a positive value")
+                             @Digits(integer = 8, fraction = 2, message = "suggested price can contain a maximum of 8 digits before the decimal point and 2 digits after it")
+                             BigDecimal suggestedPrice,
                              @Schema(description = "The externalId of product category.", example = "123e4567-e89b-12d3-a456-426614174000", required = true)
                              @NotNull(message = "The product category cannot be null.")
                              String productCategory) {

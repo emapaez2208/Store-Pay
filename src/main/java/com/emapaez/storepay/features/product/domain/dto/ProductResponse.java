@@ -6,6 +6,6 @@ import java.util.UUID;
 public record ProductResponse(UUID externalId,
                               String name,
                               String description,
-                              BigDecimal price,
+                              BigDecimal suggestedPrice,
                               String category) {
 }

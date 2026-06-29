@@ -31,8 +31,11 @@ public class ProductEntity {
     @Column(length = 200, nullable = false)
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(nullable = false, precision = 10, scale = 2, name = "suggested_price")
+    private BigDecimal suggestedPrice;
+
+    @Column(nullable = false)
+    private Boolean enable;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_category_id", nullable = false)
@@ -43,5 +46,7 @@ public class ProductEntity {
     void onCreate(){
         if(externalId == null)
             externalId = UUID.randomUUID();
+        if(enable == null)
+            enable = true;
     }
 }

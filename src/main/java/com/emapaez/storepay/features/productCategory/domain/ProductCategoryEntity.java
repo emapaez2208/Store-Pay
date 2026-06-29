@@ -20,9 +20,6 @@ public class ProductCategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "external_id", unique = true, updatable = false, nullable = false)
-    private UUID externalId;
-
     @Column(nullable = false, length = 30, unique = true)
     private String name;
 
@@ -31,7 +28,7 @@ public class ProductCategoryEntity {
 
     @PrePersist
     void onCreate(){
-        if(externalId == null)
-            externalId = UUID.randomUUID();
+        if(description == null)
+            description = "no description";
     }
 }
