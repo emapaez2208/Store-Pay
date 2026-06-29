@@ -6,8 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -31,7 +34,7 @@ public class ProductEntity {
     @Column(length = 200, nullable = false)
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2, name = "suggested_price")
+    @Column(nullable = false, precision = 10, scale = 2, name = "suggested_price", columnDefinition = "DECIMAL(10,2) CHECK (suggested_price >= 0)")
     private BigDecimal suggestedPrice;
 
     @Column(nullable = false)
@@ -40,6 +43,15 @@ public class ProductEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategoryEntity productCategory;
+
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Instant updatedAt;
 
 
     @PrePersist

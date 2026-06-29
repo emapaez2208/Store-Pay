@@ -7,5 +7,6 @@ public record ProductResponse(UUID externalId,
                               String name,
                               String description,
                               BigDecimal suggestedPrice,
-                              String category) {
+                              String category,
+                              Boolean enable) {
 }
