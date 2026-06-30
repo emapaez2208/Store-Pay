@@ -1,10 +1,10 @@
 package com.emapaez.storepay.features.store.domain;
 
+import com.emapaez.storepay.features.storeProduct.domain.StoreProductEntity;
 import com.emapaez.storepay.features.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +38,8 @@ public class StoreEntity {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<UserEntity> users;
 
-
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    private List<StoreProductEntity> products;
 
     @PrePersist
     void onCreate(){
