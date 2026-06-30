@@ -1,6 +1,7 @@
 package com.emapaez.storepay.features.product.domain.dto;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 public record ProductResponse(UUID externalId,
@@ -8,5 +9,8 @@ public record ProductResponse(UUID externalId,
                               String description,
                               BigDecimal suggestedPrice,
                               String category,
-                              Boolean enable) {
+                              Instant createdAt,
+                              Instant updatedAt,
+                              Boolean enable
+                              ) {
 }
