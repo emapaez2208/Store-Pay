@@ -33,7 +33,7 @@ public class CartItemEntity {
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "store_product_id", nullable = false)
     private StoreProductEntity storeProduct;
 
     @ManyToOne(fetch = FetchType.EAGER)
