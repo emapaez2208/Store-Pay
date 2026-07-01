@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface ProductCategoryRepository extends JpaRepository<ProductCategoryEntity, Long>, JpaSpecificationExecutor<ProductCategoryEntity> {
 
-    Optional<ProductCategoryEntity> findByName(String name);
-    boolean existsByName(String name);
+    Optional<ProductCategoryEntity> findByNameIgnoreCase(String name);
+    boolean existsByNameIgnoreCase(String name);
 }

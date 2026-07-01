@@ -45,7 +45,7 @@ public class ProductCategoryService implements IProductCategoryService{
     @Transactional
     public ProductCategoryResponse create(ProductCategoryRequest request){
 
-        if(repository.existsByName(request.name())){
+        if(repository.existsByNameIgnoreCase(request.name())){
             throw new ProductCategoryExistsWithNameException();
         }
         ProductCategoryEntity entity = repository.save(mapper.toEntity(request));
@@ -58,12 +58,12 @@ public class ProductCategoryService implements IProductCategoryService{
     public ProductCategoryResponse update(String oldName, ProductCategoryRequest request){
 
         if(!oldName.equals(request.name())){
-            if(repository.existsByName(request.name())){
+            if(repository.existsByNameIgnoreCase(request.name())){
                 throw new ProductCategoryExistsWithNameException();
             }
         }
 
-        ProductCategoryEntity entity = repository.findByName(request.name())
+        ProductCategoryEntity entity = repository.findByNameIgnoreCase(oldName)
                 .orElseThrow(ProductCategoryNotFoundException::new);
 
         entity.setName(request.name());
@@ -77,10 +77,10 @@ public class ProductCategoryService implements IProductCategoryService{
     @Override
     public void delete(String name){
 
-        ProductCategoryEntity toBeDeleted = repository.findByName(name)
+        ProductCategoryEntity toBeDeleted = repository.findByNameIgnoreCase(name)
                 .orElseThrow(ProductCategoryNotFoundException::new);
 
-        if(productRepository.exitsByProductCategoryName(name)){
+        if(productRepository.existsByProductCategoryName(name)){
             throw new ProductExistsWithThisCategoryException(
                     "There is one or more products in this category. the category cannot be deleted.");
         }
