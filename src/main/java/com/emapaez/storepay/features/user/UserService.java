@@ -9,6 +9,12 @@ import com.emapaez.storepay.features.user.exception.UserExistsWithDniException;
 import com.emapaez.storepay.features.user.exception.UserExistsWithEmailException;
 import com.emapaez.storepay.features.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.PredicateSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +27,12 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
 
+    /// ------------------------ METHOD PRIVATE ------------------------------------- ///
     private UserEntity getByExternalId(UUID externalId){
         return userRepository.findByExternalId(externalId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with this External Id"));
     }
-
+    /// ------------------------ METHOD PRIVATE ------------------------------------- ///
 
     @Override
     @Transactional
@@ -66,5 +73,33 @@ public class UserService implements IUserService {
         UserEntity saved = userRepository.save(user);
 
         return mapper.toDto(saved);
+    }
+
+    /// PRE AUTHORIZE ADMIN
+    @Override
+    public Page<UserResponse> getAll(int page,
+                                    int size,
+                                    String name,
+                                    String lastName,
+                                    String dni,
+                                    String email,
+                                    Long phoneNumber,
+                                    String store,
+                                    Boolean enable){
+
+        PredicateSpecification<UserEntity> spec = PredicateSpecification.allOf(
+                UserSpecification.nameContains(name),
+                UserSpecification.lastNameContains(lastName),
+                UserSpecification.dniEquals(dni),
+                UserSpecification.emailEquals(email),
+                UserSpecification.phoneEquals(phoneNumber),
+                UserSpecification.storeEquals(store)
+                /// AGREGAR ENABLE CON CREDENCIALES TAMBIEN EN USERSPECIFICATION
+        );
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("store").ascending());
+
+        return userRepository.findAll(Specification.where(spec), pageable)
+                .map(mapper::toDto);
     }
 }

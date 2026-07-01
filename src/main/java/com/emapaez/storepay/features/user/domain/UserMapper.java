@@ -33,8 +33,8 @@ public interface UserMapper {
         if(dni == null)
             return null;
 
-        String limpio = dni.replaceAll("\\D", "");
+        String clear = dni.replaceAll("\\D", "");
 
-        return String.format("%08d", Long.parseLong(limpio));
+        return String.format("%08d", Long.parseLong(clear));
     }
 }
