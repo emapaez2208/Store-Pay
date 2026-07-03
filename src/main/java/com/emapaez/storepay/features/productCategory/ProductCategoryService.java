@@ -80,7 +80,7 @@ public class ProductCategoryService implements IProductCategoryService{
         ProductCategoryEntity toBeDeleted = repository.findByNameIgnoreCase(name)
                 .orElseThrow(ProductCategoryNotFoundException::new);
 
-        if(productRepository.existsByProductCategoryName(name)){
+        if(productRepository.existsByProductCategoryNameIgnoreCase(name)){
             throw new ProductExistsWithThisCategoryException(
                     "There is one or more products in this category. the category cannot be deleted.");
         }
