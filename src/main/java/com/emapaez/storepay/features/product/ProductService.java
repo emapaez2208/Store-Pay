@@ -1,13 +1,19 @@
 package com.emapaez.storepay.features.product;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import com.emapaez.storepay.features.product.domain.ProductMapper;
 import com.emapaez.storepay.features.product.domain.ProductEntity;
 import com.emapaez.storepay.features.product.domain.dto.ProductRequest;
 import com.emapaez.storepay.features.product.domain.dto.ProductResponse;
 import com.emapaez.storepay.features.product.exception.ProductExistsWithNameException;
+import com.emapaez.storepay.features.product.exception.ProductNotFoundException;
+import com.emapaez.storepay.features.product.exception.StoreProductExistsWithProductException;
 import com.emapaez.storepay.features.productCategory.exception.ProductCategoryNotFoundException;
+import com.emapaez.storepay.features.storeProduct.StoreProductRepository;
 import com.emapaez.storepay.features.productCategory.ProductCategoryRepository;
 import com.emapaez.storepay.features.productCategory.domain.ProductCategoryEntity;
 
@@ -21,6 +27,15 @@ public class ProductService implements IProductService {
     private final ProductRepository repository;
     private final ProductMapper mapper;
     private final ProductCategoryRepository productCategoryRepository;
+    private final StoreProductRepository storeProductRepository;
+
+    /// ------------------------ PRIVATE METHOD -------------------------- ///
+
+    private ProductEntity getByExternalId(UUID externalId){
+        return repository.findByExternalId(externalId)
+                        .orElseThrow(ProductNotFoundException::new);
+    }
+    /// ------------------------ PRIVATE METHOD -------------------------- ///
 
 
     @Override
@@ -41,6 +56,48 @@ public class ProductService implements IProductService {
         ProductEntity saved = repository.save(entity);
 
         return mapper.toDto(saved);
+    }
+
+    @Override
+    @Transactional
+    public ProductResponse update(UUID externalId, ProductRequest request){
+
+        if(repository.existsByNameIgnoreCase(request.name())){
+
+            throw new ProductExistsWithNameException();
+        }
+
+        ProductEntity entity = getByExternalId(externalId);
+        ProductCategoryEntity productCategory = productCategoryRepository.findByNameIgnoreCase(request.productCategory())
+                                                    .orElseThrow(ProductCategoryNotFoundException::new);
+
+        entity.setName(request.name());
+        entity.setDescription(request.description());
+        entity.setProductCategory(productCategory);
+        entity.setSuggestedPrice(request.suggestedPrice());
+
+        ProductEntity saved = repository.save(entity);
+
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    public ProductResponse findByExternalId(UUID externalId){
+        return mapper.toDto(getByExternalId(externalId));
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID externalId){
+
+        ProductEntity entity = getByExternalId(externalId);
+
+        if(storeProductRepository.existsByProduct(entity)){
+            throw new StoreProductExistsWithProductException("There is one or more store products in this Product. the Product cannot be deleted.");
+        }
+
+        entity.setEnable(false);
+        repository.save(entity);
     }
   
 
