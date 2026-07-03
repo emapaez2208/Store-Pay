@@ -1,10 +1,13 @@
 package com.emapaez.storepay.features.product;
 
 import com.emapaez.storepay.features.product.domain.ProductEntity;
+import com.emapaez.storepay.features.productCategory.domain.ProductCategoryEntity;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Repository
