@@ -2,8 +2,15 @@ package com.emapaez.storepay.features.product;
 
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.PredicateSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.emapaez.storepay.features.product.domain.ProductMapper;
 import com.emapaez.storepay.features.product.domain.ProductEntity;
@@ -100,5 +107,31 @@ public class ProductService implements IProductService {
         repository.save(entity);
     }
   
+
+    @Override
+    public Page<ProductResponse> getAll(int page,
+                                        int size,
+                                        String name,
+                                        String description,
+                                        BigDecimal suggestedPriceMin,
+                                        BigDecimal suggestedPriceMax,
+                                        String productCategory,
+                                        Boolean enable){
+
+
+        PredicateSpecification<ProductEntity> spec = PredicateSpecification.allOf(
+            ProductSpecification.nameContains(name),
+            ProductSpecification.descriptionContains(description),
+            ProductSpecification.suggestedPriceBetween(suggestedPriceMin, suggestedPriceMax),
+            ProductSpecification.productCategoryEqual(productCategory),
+            ProductSpecification.enableEqual(enable)
+        );
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+
+        return repository.findAll(Specification.where(spec), pageable)
+                    .map(mapper::toDto);
+
+    }
 
 }
