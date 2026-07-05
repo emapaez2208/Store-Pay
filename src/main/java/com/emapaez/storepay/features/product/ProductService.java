@@ -69,14 +69,14 @@ public class ProductService implements IProductService {
     @Transactional
     public ProductResponse update(UUID externalId, ProductRequest request){
 
-        if(repository.existsByNameIgnoreCase(request.name())){
-
-            throw new ProductExistsWithNameException();
-        }
-
         ProductEntity entity = getByExternalId(externalId);
         ProductCategoryEntity productCategory = productCategoryRepository.findByNameIgnoreCase(request.productCategory())
                                                     .orElseThrow(ProductCategoryNotFoundException::new);
+
+        if(!entity.getName().equalsIgnoreCase(request.name())
+                && repository.existsByNameIgnoreCase(request.name())){
+            throw new ProductExistsWithNameException();
+        }
 
         entity.setName(request.name());
         entity.setDescription(request.description());
