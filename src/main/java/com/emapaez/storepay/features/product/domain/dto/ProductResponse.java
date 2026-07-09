@@ -10,7 +10,6 @@ public record ProductResponse(UUID externalId,
                               BigDecimal suggestedPrice,
                               String category,
                               Instant createdAt,
-                              Instant updatedAt,
-                              Boolean enable
+                              Instant updatedAt
                               ) {
 }

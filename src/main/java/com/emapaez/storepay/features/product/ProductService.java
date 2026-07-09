@@ -103,8 +103,7 @@ public class ProductService implements IProductService {
             throw new StoreProductExistsWithProductException("There is one or more store products in this Product. the Product cannot be deleted.");
         }
 
-        entity.setEnable(false);
-        repository.save(entity);
+        repository.delete(entity);
     }
   
 
@@ -115,16 +114,14 @@ public class ProductService implements IProductService {
                                         String description,
                                         BigDecimal suggestedPriceMin,
                                         BigDecimal suggestedPriceMax,
-                                        String productCategory,
-                                        Boolean enable){
+                                        String productCategory){
 
 
         PredicateSpecification<ProductEntity> spec = PredicateSpecification.allOf(
             ProductSpecification.nameContains(name),
             ProductSpecification.descriptionContains(description),
             ProductSpecification.suggestedPriceBetween(suggestedPriceMin, suggestedPriceMax),
-            ProductSpecification.productCategoryEqual(productCategory),
-            ProductSpecification.enableEqual(enable)
+            ProductSpecification.productCategoryEqual(productCategory)
         );
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());

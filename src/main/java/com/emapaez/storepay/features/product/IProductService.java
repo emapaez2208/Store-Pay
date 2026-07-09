@@ -19,6 +19,5 @@ public interface IProductService {
                                         String description,
                                         BigDecimal suggestedPriceMin,
                                         BigDecimal suggestedPriceMax,
-                                        String productCategory,
-                                        Boolean enable);
+                                        String productCategory);
 }

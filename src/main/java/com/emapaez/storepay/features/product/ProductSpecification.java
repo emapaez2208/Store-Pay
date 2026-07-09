@@ -38,12 +38,6 @@ public class ProductSpecification {
         };
     }
 
-    public static PredicateSpecification<ProductEntity> enableEqual(Boolean enable){
-        return (root, cb) -> enable == null
-        ? cb.conjunction()
-        : cb.equal(root.get("enable"), enable);
-    }
-
     public static PredicateSpecification<ProductEntity> productCategoryEqual(String productCategory){
         return (root, cb) -> productCategory == null || productCategory.isBlank()
         ? cb.conjunction()

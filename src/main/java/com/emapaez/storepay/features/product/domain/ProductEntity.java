@@ -37,9 +37,6 @@ public class ProductEntity {
     @Column(nullable = false, precision = 10, scale = 2, name = "suggested_price", columnDefinition = "DECIMAL(10,2) CHECK (suggested_price >= 0)")
     private BigDecimal suggestedPrice;
 
-    @Column(nullable = false)
-    private Boolean enable;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategoryEntity productCategory;
@@ -58,7 +55,5 @@ public class ProductEntity {
     void onCreate(){
         if(externalId == null)
             externalId = UUID.randomUUID();
-        if(enable == null)
-            enable = true;
     }
 }

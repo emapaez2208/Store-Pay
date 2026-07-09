@@ -27,10 +27,9 @@ public class ProductController {
                                         @RequestParam(required = false) String description,
                                         @RequestParam(required = false) BigDecimal suggestedPriceMin,
                                         @RequestParam(required = false) BigDecimal suggestedPriceMax,
-                                        @RequestParam(required = false) String productCategory,
-                                        @RequestParam(required = false) Boolean enable){
+                                        @RequestParam(required = false) String productCategory){
 
-        return productService.getAll(page, size, name, description, suggestedPriceMin, suggestedPriceMax, productCategory, enable);
+        return productService.getAll(page, size, name, description, suggestedPriceMin, suggestedPriceMax, productCategory);
     }
 
     @GetMapping("/{externalId}")
