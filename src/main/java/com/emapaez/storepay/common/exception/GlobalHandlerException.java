@@ -4,6 +4,7 @@ package com.emapaez.storepay.common.exception;
 import com.emapaez.storepay.common.exception.dto.ErrorMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.error.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -107,6 +108,11 @@ public class GlobalHandlerException {
     @ExceptionHandler(EntityNotFoundCustomException.class)
     public ResponseEntity<ErrorMessage> handlerEntityNotFound(EntityNotFoundCustomException ex){
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorMessage> handlerIlegalArgument(IllegalArgumentException ex){
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
 }
