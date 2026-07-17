@@ -13,9 +13,16 @@ import com.emapaez.storepay.features.storeProduct.StoreProductRepository;
 import com.emapaez.storepay.features.storeProduct.domain.StoreProductEntity;
 import com.emapaez.storepay.features.storeProduct.exception.StoreProductNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.PredicateSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -45,6 +52,32 @@ public class CartItemService implements ICartItemService{
 
 
     @Override
+    public Page<CartItemResponse> getAll(int page,
+                                         int size,
+                                         Long quantityMin,
+                                         Long quantityMax,
+                                         BigDecimal priceMin,
+                                         BigDecimal priceMax,
+                                         String productName,
+                                         String storeName,
+                                         UUID cartId){
+
+        PredicateSpecification<CartItemEntity> spec = PredicateSpecification.allOf(
+                CartItemSpecification.quantityBetween(quantityMin, quantityMax),
+                CartItemSpecification.priceBetween(priceMin, priceMax),
+                CartItemSpecification.productNameContains(productName),
+                CartItemSpecification.storeEquals(storeName),
+                CartItemSpecification.cartEquals(cartId)
+        );
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("cart.store.name").ascending()
+                .and(Sort.by("storeProduct.product.name").ascending()));
+
+        return repository.findAll(Specification.where(spec), pageable)
+                .map(mapper::toDto);
+    }
+
+    @Override
     @Transactional
     public CartItemResponse create(CartItemRequest request){
 
@@ -65,7 +98,6 @@ public class CartItemService implements ICartItemService{
         return mapper.toDto(saved);
     }
 
-    /// TEST GIT
 
 
 }
