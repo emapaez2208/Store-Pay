@@ -9,6 +9,12 @@ import com.emapaez.storepay.features.store.exception.StoreExistsWithCuitExceptio
 import com.emapaez.storepay.features.store.exception.StoreExistsWithNameException;
 import com.emapaez.storepay.features.store.exception.StoreNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.PredicateSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +32,24 @@ public class StoreService implements IStoreService{
                 .orElseThrow(() -> new StoreNotFoundException("Store not found with this external Id"));
     }
 
+
+    public Page<StoreResponse> getAll(int page,
+                                      int size,
+                                      String name,
+                                      String cuit,
+                                      Boolean enable){
+
+        PredicateSpecification<StoreEntity> spec = PredicateSpecification.allOf(
+                StoreSpecification.nameContains(name),
+                StoreSpecification.cuitEquals(cuit),
+                StoreSpecification.enableEquals(enable)
+        );
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+
+        return storeRepository.findAll(Specification.where(spec), pageable)
+                .map(mapper::toDto);
+    }
 
     @Override
     @Transactional
