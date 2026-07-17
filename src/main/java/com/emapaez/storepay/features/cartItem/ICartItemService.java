@@ -19,4 +19,7 @@ public interface ICartItemService {
                                   String productName,
                                   String storeName,
                                   UUID cartId);
+    CartItemResponse updatePrice(UUID externalId);
+    CartItemResponse updateQuantity(UUID externalId, Long quantity);
+    void delete(UUID externalId);
 }

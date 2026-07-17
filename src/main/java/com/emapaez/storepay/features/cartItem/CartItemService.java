@@ -98,6 +98,37 @@ public class CartItemService implements ICartItemService{
         return mapper.toDto(saved);
     }
 
+    @Override
+    @Transactional
+    public CartItemResponse updatePrice(UUID externalId){
+        CartItemEntity item = findByExternalId(externalId);
+        item.setPrice(item.getStoreProduct().getPrice());
 
+        CartItemEntity saved = repository.save(item);
+
+        return mapper.toDto(saved);
+    }
+
+
+    @Override
+    @Transactional
+    public CartItemResponse updateQuantity(UUID externalId, Long quantity){
+        if(quantity >= 0){
+            CartItemEntity item = findByExternalId(externalId);
+            item.setQuantity(quantity);
+
+            CartItemEntity saved = repository.save(item);
+            return mapper.toDto(saved);
+        }else{
+            throw new IllegalArgumentException("Quantity must be greater than or equal to zero");
+        }
+    }
+
+    @Override
+    public void delete(UUID externalId){
+        CartItemEntity item = findByExternalId(externalId);
+
+        repository.delete(item);
+    }
 
 }
