@@ -60,6 +60,12 @@ public class CartEntity {
             externalId = UUID.randomUUID();
         if(items == null)
             items = new ArrayList<>();
+        if(totalPrice == null)
+            totalPrice = BigDecimal.ZERO;
+    }
+
+    public void addItem(CartItemEntity item){
+        items.add(item);
     }
 
 }
