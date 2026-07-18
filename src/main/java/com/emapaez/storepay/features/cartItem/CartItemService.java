@@ -79,7 +79,7 @@ public class CartItemService implements ICartItemService{
 
     @Override
     @Transactional
-    public CartItemResponse create(CartItemRequest request){
+    public CartItemEntity create(CartItemRequest request){
 
         CartEntity cart = cartRepository.findByExternalId(request.cart()).orElseThrow(CartNotFoundException::new);
         StoreProductEntity storeProduct = storeProductRepository.findByExternalId(request.storeProduct()).orElseThrow(StoreProductNotFoundException::new);
@@ -95,7 +95,7 @@ public class CartItemService implements ICartItemService{
 
         CartItemEntity saved = repository.save(item);
 
-        return mapper.toDto(saved);
+        return saved;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.cartItem;
 
+import com.emapaez.storepay.features.cartItem.domain.CartItemEntity;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemResponse;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public interface ICartItemService {
     CartItemResponse getByExternalId(UUID externalId);
-    CartItemResponse create(CartItemRequest request);
+    CartItemEntity create(CartItemRequest request);
     Page<CartItemResponse> getAll(int page,
                                   int size,
                                   Long quantityMin,

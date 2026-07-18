@@ -6,7 +6,9 @@ import com.emapaez.storepay.features.cart.domain.dto.CartRequest;
 import com.emapaez.storepay.features.cart.domain.dto.CartResponse;
 import com.emapaez.storepay.features.cart.exception.CartNotFoundException;
 import com.emapaez.storepay.features.cartItem.CartItemRepository;
+import com.emapaez.storepay.features.cartItem.ICartItemService;
 import com.emapaez.storepay.features.cartItem.domain.CartItemEntity;
+import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
 import com.emapaez.storepay.features.cartItem.exception.CartItemNotFoundException;
 import com.emapaez.storepay.features.store.StoreRepository;
 import com.emapaez.storepay.features.store.exception.StoreNotFoundException;
@@ -24,7 +26,7 @@ public class CartService implements ICartService{
     private final CartRepository repository;
     private final CartMapper mapper;
     private final StoreRepository storeRepository;
-    private final CartItemRepository cartItemRepository;
+    private final ICartItemService cartItemService;
 
     /// ------------------------------ PRIVATE METHOD ------------------------------------ ///
 
@@ -62,12 +64,15 @@ public class CartService implements ICartService{
 
     @Override
     @Transactional
-    public CartResponse agreeItem(UUID externalId, UUID cartItemId){
-        CartEntity cart = findByExternalId(externalId);
-        CartItemEntity item = cartItemRepository.findByExternalId(cartItemId)
-                .orElseThrow(CartItemNotFoundException::new);
+    public CartResponse agreeItem(CartItemRequest itemRequest){
+        CartEntity cart = findByExternalId(itemRequest.cart());
 
-        return null; /// TERMINAR , SACAR LOGICA DE CART ITEM CONTROLLER
+        cart.addItem(cartItemService.create(itemRequest));
+
+        /// SUMAR PRECIO TOTAL
+
+        CartEntity saved = repository.save(cart);
+        return mapper.toDto(saved);
     }
 
 
