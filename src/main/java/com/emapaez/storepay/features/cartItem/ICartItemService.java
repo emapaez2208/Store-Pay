@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.cartItem;
 
+import com.emapaez.storepay.features.cart.domain.CartEntity;
 import com.emapaez.storepay.features.cartItem.domain.CartItemEntity;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemResponse;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface ICartItemService {
-    CartItemResponse getByExternalId(UUID externalId);
+    CartItemEntity getByExternalId(UUID externalId);
     CartItemEntity create(CartItemRequest request);
     Page<CartItemResponse> getAll(int page,
                                   int size,
@@ -20,7 +21,8 @@ public interface ICartItemService {
                                   String productName,
                                   String storeName,
                                   UUID cartId);
-    CartItemResponse updatePrice(UUID externalId);
-    CartItemResponse updateQuantity(UUID externalId, Long quantity);
+    void updatePrice(UUID externalId, BigDecimal newPrice);
+    void updateQuantity(UUID externalId, Long quantity);
     void delete(UUID externalId);
+    void deleteByCart(CartEntity cart);
 }

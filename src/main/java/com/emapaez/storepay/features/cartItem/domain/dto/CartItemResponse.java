@@ -8,5 +8,6 @@ import java.util.UUID;
 public record CartItemResponse(UUID externalId,
                                Long quantity,
                                BigDecimal price,
+                               BigDecimal subTotal,
                                String product) {
 }

@@ -35,11 +35,14 @@ public class CartEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private StoreEntity store;
 
-    @Column(name = "total_price", nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10,2) CHECK (total_price >= 0)")
-    private BigDecimal totalPrice;
+    @Column(name = "sub_total", nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10,2) CHECK (sub_total >= 0)")
+    private BigDecimal subTotal;
 
     @Column(nullable = false, columnDefinition = "INT CHECK (discount BETWEEN 0 AND 100)")
     private Integer discount;
+
+    @Column(name = "total_price", nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10,2) CHECK (total_price >= 0)")
+    private BigDecimal totalPrice;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     private List<CartItemEntity> items;
@@ -66,6 +69,10 @@ public class CartEntity {
 
     public void addItem(CartItemEntity item){
         items.add(item);
+    }
+
+    public void removeItem(CartItemEntity item){
+        items.remove(item);
     }
 
 }

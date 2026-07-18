@@ -17,5 +17,6 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long>,
     boolean existsByStoreProduct(StoreProductEntity storeProduct);
     boolean existsByStoreProductAndCart(StoreProductEntity storeProduct, CartEntity cart);
     Optional<CartItemEntity> findByExternalId(UUID externalId);
+    void deleteAllByCart(CartEntity cart);
 
 }

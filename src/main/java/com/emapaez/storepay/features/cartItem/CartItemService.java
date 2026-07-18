@@ -43,11 +43,15 @@ public class CartItemService implements ICartItemService{
                 .orElseThrow(CartItemNotFoundException::new);
     }
 
+    private BigDecimal calculateSubTotal(CartItemEntity item){
+        return item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
+    }
+
     /// ------------------------- PRIVATE METHOD ---------------------------------------------- ///
 
     @Override
-    public CartItemResponse getByExternalId(UUID externalId){
-        return mapper.toDto(findByExternalId(externalId));
+    public CartItemEntity getByExternalId(UUID externalId){
+        return findByExternalId(externalId);
     }
 
 
@@ -92,6 +96,7 @@ public class CartItemService implements ICartItemService{
         item.setCart(cart);
         item.setStoreProduct(storeProduct);
         item.setPrice(storeProduct.getPrice());
+        item.setSubTotal(calculateSubTotal(item));
 
         CartItemEntity saved = repository.save(item);
 
@@ -100,19 +105,18 @@ public class CartItemService implements ICartItemService{
 
     @Override
     @Transactional
-    public CartItemResponse updatePrice(UUID externalId){
+    public void updatePrice(UUID externalId, BigDecimal newPrice){
         CartItemEntity item = findByExternalId(externalId);
-        item.setPrice(item.getStoreProduct().getPrice());
+        item.setPrice(newPrice);
+        item.setSubTotal(calculateSubTotal(item));
 
-        CartItemEntity saved = repository.save(item);
-
-        return mapper.toDto(saved);
+        repository.save(item);
     }
 
 
     @Override
     @Transactional
-    public CartItemResponse updateQuantity(UUID externalId, Long quantity){
+    public void updateQuantity(UUID externalId, Long quantity){
 
         if(quantity == null) {
             throw new IllegalArgumentException("Quantity is required.");
@@ -123,9 +127,9 @@ public class CartItemService implements ICartItemService{
 
         CartItemEntity item = findByExternalId(externalId);
         item.setQuantity(quantity);
+        item.setSubTotal(calculateSubTotal(item));
 
-        CartItemEntity saved = repository.save(item);
-        return mapper.toDto(saved);
+        repository.save(item);
     }
 
     @Override
@@ -133,6 +137,11 @@ public class CartItemService implements ICartItemService{
         CartItemEntity item = findByExternalId(externalId);
 
         repository.delete(item);
+    }
+
+    @Override
+    public void deleteByCart(CartEntity cart){
+        repository.deleteAllByCart(cart);
     }
 
 }

@@ -114,4 +114,9 @@ public class GlobalHandlerException {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorMessage> handlerBusinessException(BusinessException ex){
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
 }

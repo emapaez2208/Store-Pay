@@ -10,8 +10,9 @@ import java.util.UUID;
 
 public record CartResponse(UUID externalId,
                            StoreResponse store,
-                           BigDecimal totalPrice,
+                           BigDecimal subTotal,
                            Integer discount,
+                           BigDecimal totalPrice,
                            List<CartItemResponse> items,
                            Instant createdAt,
                            Instant updatedAt) {
