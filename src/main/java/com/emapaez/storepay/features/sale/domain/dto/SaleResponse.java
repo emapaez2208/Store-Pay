@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 public record SaleResponse(UUID externalId,
-                           StoreResponse store,
+                           UUID storeId,
+                           String storeName,
                            BigDecimal subTotal,
                            Integer discount,
                            BigDecimal totalPrice,
-                           List<SaleItemResponse> items,
                            Instant createdAt) {
 }

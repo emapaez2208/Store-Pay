@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,18 +42,20 @@ public class SaleItemService implements ISaleItemService {
 
     @Override
     @Transactional
-    public Boolean create(SaleEntity sale, CartItemEntity item){
+    public List<SaleItemEntity> create(SaleEntity sale, List<CartItemEntity> items){
 
-        SaleItemEntity saleItem = SaleItemEntity.builder()
-                .sale(sale)
-                .price(item.getPrice())
-                .quantity(item.getQuantity())
-                .subTotal(item.getSubTotal())
-                .storeProduct(item.getStoreProduct())
-                .build();
-
-        repository.save(saleItem);
-        return Boolean.TRUE;
+        List<SaleItemEntity> saleItems = new ArrayList<>();
+        for(CartItemEntity item : items) {
+            SaleItemEntity saleItem = SaleItemEntity.builder()
+                    .sale(sale)
+                    .price(item.getPrice())
+                    .quantity(item.getQuantity())
+                    .subTotal(item.getSubTotal())
+                    .storeProduct(item.getStoreProduct())
+                    .build();
+            saleItems.add(saleItem);
+        }
+        return repository.saveAll(saleItems);
     }
 
 

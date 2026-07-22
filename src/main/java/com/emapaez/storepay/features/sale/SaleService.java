@@ -1,13 +1,22 @@
 package com.emapaez.storepay.features.sale;
 
+import com.emapaez.storepay.features.cart.domain.CartEntity;
 import com.emapaez.storepay.features.sale.domain.SaleEntity;
 import com.emapaez.storepay.features.sale.domain.SaleMapper;
 import com.emapaez.storepay.features.sale.domain.dto.SaleResponse;
 import com.emapaez.storepay.features.sale.exception.SaleNotFoundException;
 import com.emapaez.storepay.features.saleItem.ISaleItemService;
+import com.emapaez.storepay.features.saleItem.domain.SaleItemEntity;
+import com.emapaez.storepay.features.saleItem.domain.dto.SaleItemResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,4 +42,39 @@ public class SaleService implements ISaleService {
     }
 
 
+    @Override
+    public Page<SaleResponse> getByStore(int page, int size, UUID storeId){
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        return repository.findByStoreExternalId(storeId, pageable).map(mapper::toDto);
+    }
+
+    @Override
+    @Transactional
+    public SaleResponse create(CartEntity cart){
+
+        SaleEntity sale = SaleEntity.builder()
+                .store(cart.getStore())
+                .discount(cart.getDiscount())
+                .subTotal(cart.getSubTotal())
+                .totalPrice(cart.getTotalPrice())
+                .build();
+
+        List<SaleItemEntity> items = saleItemService.create(sale, cart.getItems());
+        sale.setItems(items);
+
+        SaleEntity saved = repository.save(sale);
+
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    public List<SaleItemResponse> getItems(UUID saleId){
+
+        SaleEntity sale = findByExternalId(saleId);
+        return saleItemService.getBySale(sale);
+    }
+
+    /// ADD GET MY STORE WITH CREDENTIALS
 }
