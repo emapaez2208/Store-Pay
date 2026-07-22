@@ -1,10 +1,12 @@
 package com.emapaez.storepay.features.cart;
 
+import com.emapaez.storepay.common.exception.BusinessException;
 import com.emapaez.storepay.features.cart.domain.CartEntity;
 import com.emapaez.storepay.features.cart.domain.CartMapper;
 import com.emapaez.storepay.features.cart.domain.dto.CartRequest;
 import com.emapaez.storepay.features.cart.domain.dto.CartResponse;
 import com.emapaez.storepay.features.cart.exception.CartNotFoundException;
+import com.emapaez.storepay.features.cart.exception.InvalidPriceException;
 import com.emapaez.storepay.features.cartItem.ICartItemService;
 import com.emapaez.storepay.features.cartItem.domain.CartItemEntity;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
@@ -148,6 +150,13 @@ public class CartService implements ICartService{
 
         if(!cart.getExternalId().equals(item.getCart().getExternalId())){
             throw new CartItemNotInCartException();
+        }
+
+        newPrice = newPrice.setScale(2, RoundingMode.HALF_UP);
+        int digits = Math.max(newPrice.precision() - newPrice.scale(), 1);
+
+        if (digits > 8) {
+            throw new InvalidPriceException("The price cannot have more than 8 integer digits.");
         }
 
         cartItemService.updatePrice(itemId, newPrice);

@@ -3,11 +3,13 @@ package com.emapaez.storepay.features.cart;
 import com.emapaez.storepay.features.cart.domain.dto.CartRequest;
 import com.emapaez.storepay.features.cart.domain.dto.CartResponse;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
+import com.emapaez.storepay.features.sale.domain.dto.SaleResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +39,7 @@ public class CartController {
         return service.create(request);
     }
 
-    @PutMapping("/{externalId}/item")
+    @PatchMapping("/{externalId}/item")
     @ResponseStatus(HttpStatus.OK)
     public CartResponse agreeItem(@PathVariable UUID externalId, @RequestBody @Valid CartItemRequest request){
         return service.agreeItem(externalId, request);
@@ -49,6 +51,25 @@ public class CartController {
         return service.removeItem(externalId, itemId);
     }
 
+    @PatchMapping("/{externalId}/item/{itemId}/quantity")
+    @ResponseStatus(HttpStatus.OK)
+    public CartResponse updateItemQuantity(@PathVariable UUID externalId,
+                                           @PathVariable UUID itemId,
+                                           @RequestBody Long quantity){
+        return service.updateItemQuantity(externalId, itemId, quantity);
+    }
 
+    @PatchMapping("/{externalId}/item/{itemId}/price")
+    @ResponseStatus(HttpStatus.OK)
+    public CartResponse updateItemPrice(@PathVariable UUID externalId,
+                                        @PathVariable UUID itemId,
+                                        @RequestBody BigDecimal price) {
+        return service.updateItemPrice(externalId, itemId, price);
+    }
 
+    @PostMapping("/{externalId}/pay")
+    @ResponseStatus(HttpStatus.CREATED)
+    public SaleResponse payCart(@PathVariable UUID externalId){
+        return service.payCart(externalId);
+    }
 }
