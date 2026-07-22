@@ -9,6 +9,8 @@ import com.emapaez.storepay.features.cartItem.ICartItemService;
 import com.emapaez.storepay.features.cartItem.domain.CartItemEntity;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
 import com.emapaez.storepay.features.cartItem.exception.CartItemNotInCartException;
+import com.emapaez.storepay.features.sale.ISaleService;
+import com.emapaez.storepay.features.sale.domain.dto.SaleResponse;
 import com.emapaez.storepay.features.store.StoreRepository;
 import com.emapaez.storepay.features.store.exception.StoreNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class CartService implements ICartService{
     private final CartMapper mapper;
     private final StoreRepository storeRepository;
     private final ICartItemService cartItemService;
+    private final ISaleService saleService;
 
     /// ------------------------------ PRIVATE METHOD ------------------------------------ ///
 
@@ -55,8 +58,7 @@ public class CartService implements ICartService{
         cart.setTotalPrice(total);
     }
 
-    private void clearCart(UUID cartId){
-        CartEntity cart = findByExternalId(cartId);
+    private void clearCart(CartEntity cart){
 
         cartItemService.deleteByCart(cart);
         repository.delete(cart);
@@ -155,7 +157,18 @@ public class CartService implements ICartService{
         return mapper.toDto(saved);
     }
 
+    @Override
+    @Transactional
+    public SaleResponse payCart(UUID cartId){
 
-    /// FALTARIA CREAR LA VENTA GUARDARLA Y LUEGO ELIMINAR EL CARRITO
+        CartEntity cart = findByExternalId(cartId);
 
+        /// AGREE METHOD PAY AND CONFIRM --------------------------------------------------------
+
+        SaleResponse sale = saleService.create(cart);
+
+        clearCart(cart);
+
+        return sale;
+    }
 }
