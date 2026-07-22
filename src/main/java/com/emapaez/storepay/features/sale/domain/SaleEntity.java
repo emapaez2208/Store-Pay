@@ -36,6 +36,9 @@ public class SaleEntity {
     @JoinColumn(name = "store_id", nullable = false, updatable = false)
     private StoreEntity store;
 
+    @Column(name = "sub_total", nullable = false, updatable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10,2) CHECK (sub_total >= 0)")
+    private BigDecimal subTotal;
+
     @Column(nullable = false, updatable = false,
             name = "total_price", precision = 10, scale =  2,
             columnDefinition = "DECIMAL(10,2) CHECK (total_price >= 0)")
