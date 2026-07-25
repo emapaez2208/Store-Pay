@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.store;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.store.domain.StoreEntity;
 import com.emapaez.storepay.features.store.domain.StoreMapper;
 import com.emapaez.storepay.features.store.domain.dto.StoreRequest;
@@ -9,7 +10,6 @@ import com.emapaez.storepay.features.store.exception.StoreExistsWithCuitExceptio
 import com.emapaez.storepay.features.store.exception.StoreExistsWithNameException;
 import com.emapaez.storepay.features.store.exception.StoreNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,11 +33,11 @@ public class StoreService implements IStoreService{
     }
 
 
-    public Page<StoreResponse> getAll(int page,
-                                      int size,
-                                      String name,
-                                      String cuit,
-                                      Boolean enable){
+    public PageResponse<StoreResponse> getAll(int page,
+                                              int size,
+                                              String name,
+                                              String cuit,
+                                              Boolean enable){
 
         PredicateSpecification<StoreEntity> spec = PredicateSpecification.allOf(
                 StoreSpecification.nameContains(name),
@@ -47,8 +47,7 @@ public class StoreService implements IStoreService{
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
 
-        return storeRepository.findAll(Specification.where(spec), pageable)
-                .map(mapper::toDto);
+        return PageResponse.of(storeRepository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
 
     @Override

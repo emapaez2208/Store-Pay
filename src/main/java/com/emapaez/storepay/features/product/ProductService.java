@@ -1,11 +1,11 @@
 package com.emapaez.storepay.features.product;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -108,13 +108,13 @@ public class ProductService implements IProductService {
   
 
     @Override
-    public Page<ProductResponse> getAll(int page,
-                                        int size,
-                                        String name,
-                                        String description,
-                                        BigDecimal suggestedPriceMin,
-                                        BigDecimal suggestedPriceMax,
-                                        String productCategory){
+    public PageResponse<ProductResponse> getAll(int page,
+                                                int size,
+                                                String name,
+                                                String description,
+                                                BigDecimal suggestedPriceMin,
+                                                BigDecimal suggestedPriceMax,
+                                                String productCategory){
 
 
         PredicateSpecification<ProductEntity> spec = PredicateSpecification.allOf(
@@ -126,9 +126,7 @@ public class ProductService implements IProductService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
 
-        return repository.findAll(Specification.where(spec), pageable)
-                    .map(mapper::toDto);
-
+        return PageResponse.of(repository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
 
 }

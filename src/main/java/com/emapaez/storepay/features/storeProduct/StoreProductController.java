@@ -3,7 +3,7 @@ package com.emapaez.storepay.features.storeProduct;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
+import com.emapaez.storepay.common.model.PageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,15 +33,15 @@ public class StoreProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<StoreProductResponse> getAll(@RequestParam int page,
-                                            @RequestParam int size,
-                                            @RequestParam(required = false) BigDecimal priceMin,
-                                            @RequestParam(required = false) BigDecimal priceMax,
-                                            @RequestParam(required = false) Long stockMin,
-                                            @RequestParam(required = false) Long stockMax,
-                                            @RequestParam(required = false) String store,
-                                            @RequestParam(required = false) String product,
-                                            @RequestParam(required = false) Boolean enable){
+    public PageResponse<StoreProductResponse> getAll(@RequestParam int page,
+                                                     @RequestParam int size,
+                                                     @RequestParam(required = false) BigDecimal priceMin,
+                                                     @RequestParam(required = false) BigDecimal priceMax,
+                                                     @RequestParam(required = false) Long stockMin,
+                                                     @RequestParam(required = false) Long stockMax,
+                                                     @RequestParam(required = false) String store,
+                                                     @RequestParam(required = false) String product,
+                                                     @RequestParam(required = false) Boolean enable){
 
 
         return service.getAll(page, size, priceMin, priceMax, stockMin, stockMax, store, product, enable);

@@ -1,9 +1,9 @@
 package com.emapaez.storepay.features.sale;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.sale.domain.dto.SaleResponse;
 import com.emapaez.storepay.features.saleItem.domain.dto.SaleItemResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +25,9 @@ public class SaleController {
 
     @GetMapping("/store/{externalId}")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SaleResponse> getByStore(@RequestParam int page,
-                                         @RequestParam int size,
-                                         @PathVariable UUID externalId){
+    public PageResponse<SaleResponse> getByStore(@RequestParam int page,
+                                                 @RequestParam int size,
+                                                 @PathVariable UUID externalId){
         return service.getByStore(page, size, externalId);
     }
 

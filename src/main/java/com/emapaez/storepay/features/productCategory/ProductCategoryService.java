@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.productCategory;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.product.ProductRepository;
 import com.emapaez.storepay.features.productCategory.domain.ProductCategoryEntity;
 import com.emapaez.storepay.features.productCategory.domain.ProductCategoryMapper;
@@ -9,7 +10,6 @@ import com.emapaez.storepay.features.productCategory.exception.ProductCategoryEx
 import com.emapaez.storepay.features.productCategory.exception.ProductCategoryNotFoundException;
 import com.emapaez.storepay.features.productCategory.exception.ProductExistsWithThisCategoryException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,7 +28,7 @@ public class ProductCategoryService implements IProductCategoryService{
     private final ProductRepository productRepository;
 
     @Override
-    public Page<ProductCategoryResponse> getAll(int page, int size, String name, String description){
+    public PageResponse<ProductCategoryResponse> getAll(int page, int size, String name, String description){
 
         PredicateSpecification<ProductCategoryEntity> spec = PredicateSpecification.allOf(
                 ProductCategorySpecification.nameContains(name),
@@ -37,8 +37,7 @@ public class ProductCategoryService implements IProductCategoryService{
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
 
-        return repository.findAll(Specification.where(spec), pageable)
-                .map(mapper::toDto);
+        return PageResponse.of(repository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
 
     @Override

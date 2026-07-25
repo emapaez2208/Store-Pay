@@ -3,7 +3,7 @@ package com.emapaez.storepay.features.storeProduct;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
+import com.emapaez.storepay.common.model.PageResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -51,15 +51,15 @@ public class StoreProductService implements IStoreProductService{
     
 
     @Override
-    public Page<StoreProductResponse> getAll(int page,
-                                            int size,
-                                            BigDecimal priceMin,
-                                            BigDecimal priceMax,
-                                            Long stockMin,
-                                            Long stockMax,
-                                            String store,
-                                            String product,
-                                            Boolean enable){
+    public PageResponse<StoreProductResponse> getAll(int page,
+                                                     int size,
+                                                     BigDecimal priceMin,
+                                                     BigDecimal priceMax,
+                                                     Long stockMin,
+                                                     Long stockMax,
+                                                     String store,
+                                                     String product,
+                                                     Boolean enable){
 
         PredicateSpecification<StoreProductEntity> spec = PredicateSpecification.allOf(
             StoreProductSpecification.priceBetween(priceMin, priceMax),
@@ -72,8 +72,7 @@ public class StoreProductService implements IStoreProductService{
         Pageable pageable = PageRequest.of(page, size, Sort.by("store.name").ascending()
                                                         .and(Sort.by("product.name").ascending()));
 
-        return repository.findAll(Specification.where(spec), pageable)
-                    .map(mapper::toDto);
+        return PageResponse.of(repository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
 
 

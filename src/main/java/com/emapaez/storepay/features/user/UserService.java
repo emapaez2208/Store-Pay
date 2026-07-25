@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.user;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.user.domain.UserEntity;
 import com.emapaez.storepay.features.user.domain.UserMapper;
 import com.emapaez.storepay.features.user.domain.dto.UserRequest;
@@ -9,7 +10,6 @@ import com.emapaez.storepay.features.user.exception.UserExistsWithDniException;
 import com.emapaez.storepay.features.user.exception.UserExistsWithEmailException;
 import com.emapaez.storepay.features.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -77,15 +77,15 @@ public class UserService implements IUserService {
 
     /// PRE AUTHORIZE ADMIN
     @Override
-    public Page<UserResponse> getAll(int page,
-                                    int size,
-                                    String name,
-                                    String lastName,
-                                    String dni,
-                                    String email,
-                                    Long phoneNumber,
-                                    String store,
-                                    Boolean enable){
+    public PageResponse<UserResponse> getAll(int page,
+                                             int size,
+                                             String name,
+                                             String lastName,
+                                             String dni,
+                                             String email,
+                                             Long phoneNumber,
+                                             String store,
+                                             Boolean enable){
 
         PredicateSpecification<UserEntity> spec = PredicateSpecification.allOf(
                 UserSpecification.nameContains(name),
@@ -99,7 +99,6 @@ public class UserService implements IUserService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("store").ascending());
 
-        return userRepository.findAll(Specification.where(spec), pageable)
-                .map(mapper::toDto);
+        return PageResponse.of(userRepository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
 }

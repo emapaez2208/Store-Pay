@@ -1,10 +1,10 @@
 package com.emapaez.storepay.features.productCategory;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.productCategory.domain.dto.ProductCategoryRequest;
 import com.emapaez.storepay.features.productCategory.domain.dto.ProductCategoryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +17,10 @@ public class ProductCategoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ProductCategoryResponse> getAll(@RequestParam int page,
-                                                @RequestParam int size,
-                                                @RequestParam(required = false) String name,
-                                                @RequestParam(required = false) String description){
+    public PageResponse<ProductCategoryResponse> getAll(@RequestParam int page,
+                                                        @RequestParam int size,
+                                                        @RequestParam(required = false) String name,
+                                                        @RequestParam(required = false) String description){
         return service.getAll(page, size, name, description);
     }
 

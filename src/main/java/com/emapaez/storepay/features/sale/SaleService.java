@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.sale;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.cart.domain.CartEntity;
 import com.emapaez.storepay.features.sale.domain.SaleEntity;
 import com.emapaez.storepay.features.sale.domain.SaleMapper;
@@ -9,7 +10,6 @@ import com.emapaez.storepay.features.saleItem.ISaleItemService;
 import com.emapaez.storepay.features.saleItem.domain.SaleItemEntity;
 import com.emapaez.storepay.features.saleItem.domain.dto.SaleItemResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,11 +43,11 @@ public class SaleService implements ISaleService {
 
 
     @Override
-    public Page<SaleResponse> getByStore(int page, int size, UUID storeId){
+    public PageResponse<SaleResponse> getByStore(int page, int size, UUID storeId){
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        return repository.findByStoreExternalId(storeId, pageable).map(mapper::toDto);
+        return PageResponse.of(repository.findByStoreExternalId(storeId, pageable), mapper::toDto);
     }
 
     @Override

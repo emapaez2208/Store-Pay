@@ -1,10 +1,10 @@
 package com.emapaez.storepay.features.product;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.product.domain.dto.ProductRequest;
 import com.emapaez.storepay.features.product.domain.dto.ProductResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +21,13 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ProductResponse> getAll(@RequestParam int page,
-                                        @RequestParam int size,
-                                        @RequestParam(required = false) String name,
-                                        @RequestParam(required = false) String description,
-                                        @RequestParam(required = false) BigDecimal suggestedPriceMin,
-                                        @RequestParam(required = false) BigDecimal suggestedPriceMax,
-                                        @RequestParam(required = false) String productCategory){
+    public PageResponse<ProductResponse> getAll(@RequestParam int page,
+                                                @RequestParam int size,
+                                                @RequestParam(required = false) String name,
+                                                @RequestParam(required = false) String description,
+                                                @RequestParam(required = false) BigDecimal suggestedPriceMin,
+                                                @RequestParam(required = false) BigDecimal suggestedPriceMax,
+                                                @RequestParam(required = false) String productCategory){
 
         return productService.getAll(page, size, name, description, suggestedPriceMin, suggestedPriceMax, productCategory);
     }

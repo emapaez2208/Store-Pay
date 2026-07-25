@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.cartItem;
 
+import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.cart.CartRepository;
 import com.emapaez.storepay.features.cart.domain.CartEntity;
 import com.emapaez.storepay.features.cart.exception.CartNotFoundException;
@@ -13,7 +14,6 @@ import com.emapaez.storepay.features.storeProduct.StoreProductRepository;
 import com.emapaez.storepay.features.storeProduct.domain.StoreProductEntity;
 import com.emapaez.storepay.features.storeProduct.exception.StoreProductNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,15 +56,15 @@ public class CartItemService implements ICartItemService{
 
 
     @Override
-    public Page<CartItemResponse> getAll(int page,
-                                         int size,
-                                         Long quantityMin,
-                                         Long quantityMax,
-                                         BigDecimal priceMin,
-                                         BigDecimal priceMax,
-                                         String productName,
-                                         String storeName,
-                                         UUID cartId){
+    public PageResponse<CartItemResponse> getAll(int numberPage,
+                                                 int size,
+                                                 Long quantityMin,
+                                                 Long quantityMax,
+                                                 BigDecimal priceMin,
+                                                 BigDecimal priceMax,
+                                                 String productName,
+                                                 String storeName,
+                                                 UUID cartId) {
 
         PredicateSpecification<CartItemEntity> spec = PredicateSpecification.allOf(
                 CartItemSpecification.quantityBetween(quantityMin, quantityMax),
@@ -74,11 +74,10 @@ public class CartItemService implements ICartItemService{
                 CartItemSpecification.cartEquals(cartId)
         );
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by("cart.store.name").ascending()
+        Pageable pageable = PageRequest.of(numberPage, size, Sort.by("cart.store.name").ascending()
                 .and(Sort.by("storeProduct.product.name").ascending()));
 
-        return repository.findAll(Specification.where(spec), pageable)
-                .map(mapper::toDto);
+        return PageResponse.of(repository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
 
     @Override
@@ -98,9 +97,7 @@ public class CartItemService implements ICartItemService{
         item.setPrice(storeProduct.getPrice());
         item.setSubTotal(calculateSubTotal(item));
 
-        CartItemEntity saved = repository.save(item);
-
-        return saved;
+        return repository.save(item);
     }
 
     @Override
