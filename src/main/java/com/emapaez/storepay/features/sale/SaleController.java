@@ -25,8 +25,8 @@ public class SaleController {
 
     @GetMapping("/store/{externalId}")
     @ResponseStatus(HttpStatus.OK)
-    public PageResponse<SaleResponse> getByStore(@RequestParam int page,
-                                                 @RequestParam int size,
+    public PageResponse<SaleResponse> getByStore(@RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "10") int size,
                                                  @PathVariable UUID externalId){
         return service.getByStore(page, size, externalId);
     }

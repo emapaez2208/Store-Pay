@@ -21,8 +21,8 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PageResponse<ProductResponse> getAll(@RequestParam int page,
-                                                @RequestParam int size,
+    public PageResponse<ProductResponse> getAll(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
                                                 @RequestParam(required = false) String name,
                                                 @RequestParam(required = false) String description,
                                                 @RequestParam(required = false) BigDecimal suggestedPriceMin,

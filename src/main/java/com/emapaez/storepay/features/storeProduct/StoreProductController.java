@@ -33,8 +33,8 @@ public class StoreProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PageResponse<StoreProductResponse> getAll(@RequestParam int page,
-                                                     @RequestParam int size,
+    public PageResponse<StoreProductResponse> getAll(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size,
                                                      @RequestParam(required = false) BigDecimal priceMin,
                                                      @RequestParam(required = false) BigDecimal priceMax,
                                                      @RequestParam(required = false) Long stockMin,
