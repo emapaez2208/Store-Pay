@@ -17,8 +17,8 @@ public class ProductCategoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PageResponse<ProductCategoryResponse> getAll(@RequestParam int page,
-                                                        @RequestParam int size,
+    public PageResponse<ProductCategoryResponse> getAll(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size,
                                                         @RequestParam(required = false) String name,
                                                         @RequestParam(required = false) String description){
         return service.getAll(page, size, name, description);

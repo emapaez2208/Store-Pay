@@ -56,7 +56,7 @@ public class ProductCategoryService implements IProductCategoryService{
     @Transactional
     public ProductCategoryResponse update(String oldName, ProductCategoryRequest request){
 
-        if(!oldName.equals(request.name())){
+        if(!oldName.equalsIgnoreCase(request.name())){
             if(repository.existsByNameIgnoreCase(request.name())){
                 throw new ProductCategoryExistsWithNameException();
             }

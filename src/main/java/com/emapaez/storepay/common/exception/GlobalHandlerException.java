@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -117,6 +118,11 @@ public class GlobalHandlerException {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorMessage> handlerBusinessException(BusinessException ex){
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorMessage> handlerMissingRequestParam(MissingServletRequestParameterException ex){
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
 }
