@@ -27,12 +27,16 @@ public class StoreService implements IStoreService{
     private final StoreRepository storeRepository;
     private final StoreMapper mapper;
 
-    private StoreEntity getByExternalId(UUID externalId){
+    /// ---------------------------- PRIVATE METHOD ------------------------------------------ ///
+
+    private StoreEntity findByExternalId(UUID externalId){
         return storeRepository.findByExternalId(externalId)
                 .orElseThrow(() -> new StoreNotFoundException("Store not found with this external Id"));
     }
 
+    /// ---------------------------- PRIVATE METHOD ------------------------------------------ ///
 
+    @Override
     public PageResponse<StoreResponse> getAll(int page,
                                               int size,
                                               String name,
@@ -68,14 +72,14 @@ public class StoreService implements IStoreService{
 
 
     @Override
-    public StoreResponse findByExternalId(UUID externalId){
-        return mapper.toDto(getByExternalId(externalId));
+    public StoreResponse getByExternalId(UUID externalId){
+        return mapper.toDto(findByExternalId(externalId));
     }
 
 
     @Override
     public void delete(UUID externalId){
-        StoreEntity store = getByExternalId(externalId);
+        StoreEntity store = findByExternalId(externalId);
 
         store.setEnable(false);
         storeRepository.save(store);
@@ -89,7 +93,7 @@ public class StoreService implements IStoreService{
             throw new StoreExistsWithNameException();
         }
 
-        StoreEntity store = getByExternalId(externalId);
+        StoreEntity store = findByExternalId(externalId);
         store.setName(update.name());
         store.setDescription(update.description());
 

@@ -35,7 +35,7 @@ public class ProductController {
     @GetMapping("/{externalId}")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse getByExternalId(@PathVariable UUID externalId){
-        return productService.findByExternalId(externalId);
+        return productService.getByExternalId(externalId);
     }
 
     @PostMapping

@@ -38,7 +38,7 @@ public class ProductService implements IProductService {
 
     /// ------------------------ PRIVATE METHOD -------------------------- ///
 
-    private ProductEntity getByExternalId(UUID externalId){
+    private ProductEntity findByExternalId(UUID externalId){
         return repository.findByExternalId(externalId)
                         .orElseThrow(ProductNotFoundException::new);
     }
@@ -69,7 +69,7 @@ public class ProductService implements IProductService {
     @Transactional
     public ProductResponse update(UUID externalId, ProductRequest request){
 
-        ProductEntity entity = getByExternalId(externalId);
+        ProductEntity entity = findByExternalId(externalId);
         ProductCategoryEntity productCategory = productCategoryRepository.findByNameIgnoreCase(request.productCategory())
                                                     .orElseThrow(ProductCategoryNotFoundException::new);
 
@@ -88,16 +88,16 @@ public class ProductService implements IProductService {
         return mapper.toDto(saved);
     }
 
-    @Override
-    public ProductResponse findByExternalId(UUID externalId){
-        return mapper.toDto(getByExternalId(externalId));
+
+    public ProductResponse getByExternalId(UUID externalId){
+        return mapper.toDto(findByExternalId(externalId));
     }
 
     @Override
     @Transactional
     public void delete(UUID externalId){
 
-        ProductEntity entity = getByExternalId(externalId);
+        ProductEntity entity = findByExternalId(externalId);
 
         if(storeProductRepository.existsByProduct(entity)){
             throw new StoreProductExistsWithProductException("There is one or more store products in this Product. the Product cannot be deleted.");

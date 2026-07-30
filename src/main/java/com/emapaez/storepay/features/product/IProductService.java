@@ -11,7 +11,7 @@ import com.emapaez.storepay.features.product.domain.dto.ProductResponse;
 public interface IProductService {
     ProductResponse create(ProductRequest request);
     ProductResponse update(UUID externalId, ProductRequest request);
-    ProductResponse findByExternalId(UUID externalId);
+    ProductResponse getByExternalId(UUID externalId);
     void delete(UUID externalId);
     PageResponse<ProductResponse> getAll(int page,
                                          int size,

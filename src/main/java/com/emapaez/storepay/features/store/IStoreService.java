@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface IStoreService {
 
     StoreResponse create(StoreRequest request);
-    StoreResponse findByExternalId(UUID externalId);
+    StoreResponse getByExternalId(UUID externalId);
     void delete(UUID externalId);
     StoreResponse update(UUID externalId, StoreUpdate update);
     PageResponse<StoreResponse> getAll(int page,
