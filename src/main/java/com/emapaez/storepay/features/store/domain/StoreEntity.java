@@ -5,6 +5,7 @@ import com.emapaez.storepay.features.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,5 +48,21 @@ public class StoreEntity {
             externalId = UUID.randomUUID();
         if(enable == null)
             enable = true;
+        if(users == null)
+            users = new ArrayList<>();
+        if(products == null)
+            products = new ArrayList<>();
+    }
+
+    public void agreeUser(UserEntity user){
+        users.add(user);
+    }
+
+    public void removeUser(UserEntity user){
+        users.remove(user);
+    }
+
+    public void agreeProduct(StoreProductEntity product){
+        products.add(product);
     }
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -50,5 +51,17 @@ public class StoreController {
     @ResponseStatus(HttpStatus.CREATED)
     public StoreResponse create(@RequestBody @Valid StoreRequest request){
         return service.create(request);
+    }
+
+    @PostMapping("/{externalId}/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> agreeUser(@PathVariable UUID externalId, @PathVariable UUID userId){
+        return service.agreeUser(externalId, userId);
+    }
+
+    @DeleteMapping("/{externalId}/users/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public List<String> removeUser(@PathVariable UUID externalId, @PathVariable UUID userId){
+        return service.removeUser(externalId, userId);
     }
 }

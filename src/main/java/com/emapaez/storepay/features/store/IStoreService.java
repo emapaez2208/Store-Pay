@@ -5,6 +5,7 @@ import com.emapaez.storepay.features.store.domain.dto.StoreRequest;
 import com.emapaez.storepay.features.store.domain.dto.StoreResponse;
 import com.emapaez.storepay.features.store.domain.dto.StoreUpdate;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IStoreService {
@@ -18,5 +19,6 @@ public interface IStoreService {
                                        String name,
                                        String cuit,
                                        Boolean enable);
-
+    List<String> agreeUser(UUID storeId, UUID userId);
+    List<String> removeUser(UUID storeId, UUID userId);
 }

@@ -9,6 +9,9 @@ import com.emapaez.storepay.features.store.domain.dto.StoreUpdate;
 import com.emapaez.storepay.features.store.exception.StoreExistsWithCuitException;
 import com.emapaez.storepay.features.store.exception.StoreExistsWithNameException;
 import com.emapaez.storepay.features.store.exception.StoreNotFoundException;
+import com.emapaez.storepay.features.user.UserRepository;
+import com.emapaez.storepay.features.user.domain.UserEntity;
+import com.emapaez.storepay.features.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,6 +30,7 @@ public class StoreService implements IStoreService{
 
     private final StoreRepository storeRepository;
     private final StoreMapper mapper;
+    private final UserRepository userRepository;
 
     /// ---------------------------- PRIVATE METHOD ------------------------------------------ ///
 
@@ -100,5 +105,35 @@ public class StoreService implements IStoreService{
         StoreEntity saved = storeRepository.save(store);
 
         return mapper.toDto(saved);
+    }
+
+    @Override
+    @Transactional
+    public List<String> agreeUser(UUID storeId, UUID userId){
+        StoreEntity store = findByExternalId(storeId);
+
+        UserEntity user = userRepository.findByExternalId(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        store.agreeUser(user);
+
+        return store.getUsers().stream()
+                .map(UserEntity::getName)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public List<String> removeUser(UUID storeId, UUID userId){
+        StoreEntity store = findByExternalId(storeId);
+
+        UserEntity user = userRepository.findByExternalId(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        store.removeUser(user);
+
+        return store.getUsers().stream()
+                .map(UserEntity::getName)
+                .toList();
     }
 }
