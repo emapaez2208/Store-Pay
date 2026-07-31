@@ -4,6 +4,7 @@ import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.store.domain.dto.StoreRequest;
 import com.emapaez.storepay.features.store.domain.dto.StoreResponse;
 import com.emapaez.storepay.features.store.domain.dto.StoreUpdate;
+import com.emapaez.storepay.features.user.domain.dto.UserResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,7 @@ public interface IStoreService {
                                        String name,
                                        String cuit,
                                        Boolean enable);
-    List<String> agreeUser(UUID storeId, UUID userId);
-    List<String> removeUser(UUID storeId, UUID userId);
+    List<UserResponse> agreeUser(UUID storeId, UUID userId);
+    List<UserResponse> removeUser(UUID storeId, UUID userId);
+    List<UserResponse> getUsers(UUID storeId);
 }

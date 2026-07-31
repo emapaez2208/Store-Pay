@@ -4,6 +4,7 @@ import com.emapaez.storepay.common.model.PageResponse;
 import com.emapaez.storepay.features.store.domain.dto.StoreRequest;
 import com.emapaez.storepay.features.store.domain.dto.StoreResponse;
 import com.emapaez.storepay.features.store.domain.dto.StoreUpdate;
+import com.emapaez.storepay.features.user.domain.dto.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,13 +56,19 @@ public class StoreController {
 
     @PostMapping("/{externalId}/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<String> agreeUser(@PathVariable UUID externalId, @PathVariable UUID userId){
+    public List<UserResponse> agreeUser(@PathVariable UUID externalId, @PathVariable UUID userId){
         return service.agreeUser(externalId, userId);
     }
 
     @DeleteMapping("/{externalId}/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public List<String> removeUser(@PathVariable UUID externalId, @PathVariable UUID userId){
+    public List<UserResponse> removeUser(@PathVariable UUID externalId, @PathVariable UUID userId){
         return service.removeUser(externalId, userId);
+    }
+
+    @GetMapping("/{externalId}/users")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponse> getUsers(@PathVariable UUID externalId){
+        return service.getUsers(externalId);
     }
 }

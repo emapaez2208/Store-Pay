@@ -11,6 +11,8 @@ import com.emapaez.storepay.features.store.exception.StoreExistsWithNameExceptio
 import com.emapaez.storepay.features.store.exception.StoreNotFoundException;
 import com.emapaez.storepay.features.user.UserRepository;
 import com.emapaez.storepay.features.user.domain.UserEntity;
+import com.emapaez.storepay.features.user.domain.UserMapper;
+import com.emapaez.storepay.features.user.domain.dto.UserResponse;
 import com.emapaez.storepay.features.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,7 @@ public class StoreService implements IStoreService{
     private final StoreRepository storeRepository;
     private final StoreMapper mapper;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     /// ---------------------------- PRIVATE METHOD ------------------------------------------ ///
 
@@ -115,7 +118,7 @@ public class StoreService implements IStoreService{
 
     @Override
     @Transactional
-    public List<String> agreeUser(UUID storeId, UUID userId){
+    public List<UserResponse> agreeUser(UUID storeId, UUID userId){
         StoreEntity store = findByExternalId(storeId);
 
         UserEntity user = userRepository.findByExternalId(userId)
@@ -126,13 +129,13 @@ public class StoreService implements IStoreService{
         userRepository.save(user);
 
         return store.getUsers().stream()
-                .map(UserEntity::getName)
+                .map(userMapper::toDto)
                 .toList();
     }
 
     @Override
     @Transactional
-    public List<String> removeUser(UUID storeId, UUID userId){
+    public List<UserResponse> removeUser(UUID storeId, UUID userId){
         StoreEntity store = findByExternalId(storeId);
 
         UserEntity user = userRepository.findByExternalId(userId)
@@ -143,7 +146,16 @@ public class StoreService implements IStoreService{
         userRepository.save(user);
 
         return store.getUsers().stream()
-                .map(UserEntity::getName)
+                .map(userMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<UserResponse> getUsers(UUID storeId){
+        StoreEntity store = findByExternalId(storeId);
+
+        return store.getUsers().stream()
+                .map(userMapper::toDto)
                 .toList();
     }
 }
