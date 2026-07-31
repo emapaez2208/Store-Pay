@@ -70,6 +70,8 @@ public class StoreService implements IStoreService{
             throw new StoreExistsWithCuitException();
         }
 
+        /// AL CREARLA BUSCAR EN LAS CREDENCIALES EL USUARIO QUE CREO Y AGREGARLO A LOS USUARIOS DE LA TIENDA
+
         StoreEntity store = storeRepository.save(mapper.toEntity(request));
 
         return mapper.toDto(store);
@@ -115,7 +117,9 @@ public class StoreService implements IStoreService{
         UserEntity user = userRepository.findByExternalId(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        store.agreeUser(user);
+        user.addStore(store);
+
+        userRepository.save(user);
 
         return store.getUsers().stream()
                 .map(UserEntity::getName)
@@ -130,7 +134,9 @@ public class StoreService implements IStoreService{
         UserEntity user = userRepository.findByExternalId(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        store.removeUser(user);
+        user.removeStore(store);
+
+        userRepository.save(user);
 
         return store.getUsers().stream()
                 .map(UserEntity::getName)

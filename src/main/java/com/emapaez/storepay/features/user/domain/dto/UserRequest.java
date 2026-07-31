@@ -26,8 +26,5 @@ public record UserRequest(@Schema(description = "The user's name, max length: 50
                           @NotNull(message = "The phone number cannot be null.")
                           @Positive(message = "The phone number must be a valid number.")
                           @Max(value = 99999999999L, message = "The phone number must have a maximum of 11 digits.")
-                          Long phoneNumber,
-                          @Schema(description = "The externalId of Store where the user works.", example = "123e4567-e89b-12d3-a456-426614174000", requiredMode = Schema.RequiredMode.REQUIRED)
-                          @NotNull(message = "The store cannot be null.")
-                          UUID store) {
+                          Long phoneNumber) {
 }

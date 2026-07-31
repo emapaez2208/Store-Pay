@@ -1,5 +1,6 @@
 package com.emapaez.storepay.features.user.domain;
 
+import com.emapaez.storepay.features.store.domain.StoreEntity;
 import com.emapaez.storepay.features.user.domain.dto.UserRequest;
 import com.emapaez.storepay.features.user.domain.dto.UserResponse;
 import org.mapstruct.Mapper;
@@ -11,10 +12,9 @@ import org.mapstruct.Named;
 public interface UserMapper {
 
     @Mapping(target = "dni", source = "dni", qualifiedByName = "mapDniToEntity")
-    @Mapping(target = "store", ignore = true)
     UserEntity toEntity(UserRequest request);
 
-    @Mapping(target = "store", source = "store.name")
+    @Mapping(target = "stores", source = "stores")
     @Mapping(target = "dni", source = "dni", qualifiedByName = "mapDniToDto")
     UserResponse toDto(UserEntity entity);
 
@@ -36,5 +36,9 @@ public interface UserMapper {
         String clear = dni.replaceAll("\\D", "");
 
         return String.format("%08d", Long.parseLong(clear));
+    }
+
+    default String map(StoreEntity store){
+        return store.getName();
     }
 }

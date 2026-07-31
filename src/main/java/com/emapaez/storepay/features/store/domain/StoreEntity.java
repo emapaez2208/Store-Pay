@@ -36,7 +36,7 @@ public class StoreEntity {
     @Column(nullable = false)
     private Boolean enable;
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "stores", fetch = FetchType.LAZY)
     private List<UserEntity> users;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
