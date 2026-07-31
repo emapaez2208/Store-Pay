@@ -96,6 +96,8 @@ public class StoreProductService implements IStoreProductService{
         storeProduct.setProduct(product);
         storeProduct.setStore(store);
 
+        store.agreeProduct(storeProduct);
+
         StoreProductEntity saved = repository.save(storeProduct);
 
         return mapper.toDto(saved);
