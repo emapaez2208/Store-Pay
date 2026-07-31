@@ -96,12 +96,16 @@ public class StoreService implements IStoreService{
     @Override
     @Transactional
     public StoreResponse update(UUID externalId, StoreUpdate update){
-        if(storeRepository.existsByName(update.name())){
-            throw new StoreExistsWithNameException();
-        }
 
         StoreEntity store = findByExternalId(externalId);
-        store.setName(update.name());
+
+        if(!store.getName().equalsIgnoreCase(update.name())){
+            if(storeRepository.existsByName(update.name())){
+                throw new StoreExistsWithNameException();
+            }
+            store.setName(update.name());
+        }
+
         store.setDescription(update.description());
 
         StoreEntity saved = storeRepository.save(store);
