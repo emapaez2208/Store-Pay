@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface IUserService {
 
     UserResponse create(UserRequest request);
-    UserResponse findByExternalId(UUID externalId);
+    UserResponse getByExternalId(UUID externalId);
     void delete(UUID externalId);
     UserResponse update(UUID externalId, UserUpdate update);
     PageResponse<UserResponse> getAll(int page, int size, String name, String lastName, String dni, String email, Long phoneNumber, String store, Boolean enable);

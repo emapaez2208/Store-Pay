@@ -45,6 +45,6 @@ public class UserSpecification {
     public static PredicateSpecification<UserEntity> storeEquals(String nameStore){
         return(root, cb) -> nameStore == null || nameStore.isBlank()
                 ? cb.conjunction()
-                : cb.equal(cb.lower(root.get("store").get("name")), nameStore.toLowerCase());
+                : cb.equal(cb.lower(root.join("stores").get("name")), nameStore.toLowerCase());
     }
 }

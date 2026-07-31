@@ -28,7 +28,7 @@ public class UserService implements IUserService {
     private final UserMapper mapper;
 
     /// ------------------------ METHOD PRIVATE ------------------------------------- ///
-    private UserEntity getByExternalId(UUID externalId){
+    private UserEntity findByExternalId(UUID externalId){
         return userRepository.findByExternalId(externalId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with this External Id"));
     }
@@ -51,8 +51,8 @@ public class UserService implements IUserService {
 
 
     @Override
-    public UserResponse findByExternalId(UUID externalId){
-        return mapper.toDto(getByExternalId(externalId));
+    public UserResponse getByExternalId(UUID externalId){
+        return mapper.toDto(findByExternalId(externalId));
     }
 
 
@@ -65,7 +65,7 @@ public class UserService implements IUserService {
     @Override
     public UserResponse update(UUID externalId, UserUpdate update){
 
-        UserEntity user = getByExternalId(externalId);
+        UserEntity user = findByExternalId(externalId);
         user.setName(update.name());
         user.setLastName(update.lastName());
         user.setPhoneNumber(update.phoneNumber());
@@ -97,7 +97,7 @@ public class UserService implements IUserService {
                 /// AGREGAR ENABLE CON CREDENCIALES TAMBIEN EN USERSPECIFICATION
         );
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by("store").ascending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("stores").ascending());
 
         return PageResponse.of(userRepository.findAll(Specification.where(spec), pageable), mapper::toDto);
     }
