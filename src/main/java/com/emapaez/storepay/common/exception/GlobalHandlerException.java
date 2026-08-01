@@ -4,6 +4,7 @@ package com.emapaez.storepay.common.exception;
 import com.emapaez.storepay.common.exception.dto.ErrorMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -123,6 +124,11 @@ public class GlobalHandlerException {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorMessage> handlerMissingRequestParam(MissingServletRequestParameterException ex){
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorMessage> handlerDataIntegrityViolation(DataIntegrityViolationException ex){
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
 }

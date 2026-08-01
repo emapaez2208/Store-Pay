@@ -59,6 +59,8 @@ public class StoreProductEntity {
 
     @PrePersist
     void onCreate(){
+        if(externalId == null)
+            externalId = UUID.randomUUID();
         if(enable == null)
             enable = true;
     }
