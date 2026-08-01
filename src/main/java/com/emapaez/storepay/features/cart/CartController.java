@@ -3,6 +3,8 @@ package com.emapaez.storepay.features.cart;
 import com.emapaez.storepay.features.cart.domain.dto.CartRequest;
 import com.emapaez.storepay.features.cart.domain.dto.CartResponse;
 import com.emapaez.storepay.features.cartItem.domain.dto.CartItemRequest;
+import com.emapaez.storepay.features.cartItem.domain.dto.CartItemUpdatePrice;
+import com.emapaez.storepay.features.cartItem.domain.dto.CartItemUpdateQuantity;
 import com.emapaez.storepay.features.sale.domain.dto.SaleResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +41,7 @@ public class CartController {
         return service.create(request);
     }
 
-    @PatchMapping("/{externalId}/item")
+    @PostMapping("/{externalId}/item")
     @ResponseStatus(HttpStatus.OK)
     public CartResponse agreeItem(@PathVariable UUID externalId, @RequestBody @Valid CartItemRequest request){
         return service.agreeItem(externalId, request);
@@ -51,20 +53,20 @@ public class CartController {
         return service.removeItem(externalId, itemId);
     }
 
-    @PatchMapping("/{externalId}/item/{itemId}/quantity")
+    @PutMapping("/{externalId}/item/{itemId}/quantity")
     @ResponseStatus(HttpStatus.OK)
     public CartResponse updateItemQuantity(@PathVariable UUID externalId,
                                            @PathVariable UUID itemId,
-                                           @RequestBody Long quantity){
-        return service.updateItemQuantity(externalId, itemId, quantity);
+                                           @RequestBody @Valid CartItemUpdateQuantity quantity){
+        return service.updateItemQuantity(externalId, itemId, quantity.quantity());
     }
 
-    @PatchMapping("/{externalId}/item/{itemId}/price")
+    @PutMapping("/{externalId}/item/{itemId}/price")
     @ResponseStatus(HttpStatus.OK)
     public CartResponse updateItemPrice(@PathVariable UUID externalId,
                                         @PathVariable UUID itemId,
-                                        @RequestBody BigDecimal price) {
-        return service.updateItemPrice(externalId, itemId, price);
+                                        @RequestBody @Valid CartItemUpdatePrice price) {
+        return service.updateItemPrice(externalId, itemId, price.price());
     }
 
     @PostMapping("/{externalId}/pay")

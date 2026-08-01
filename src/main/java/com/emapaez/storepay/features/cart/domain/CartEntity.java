@@ -65,6 +65,8 @@ public class CartEntity {
             items = new ArrayList<>();
         if(totalPrice == null)
             totalPrice = BigDecimal.ZERO;
+        if(subTotal == null)
+            subTotal = BigDecimal.ZERO;
     }
 
     public void addItem(CartItemEntity item){

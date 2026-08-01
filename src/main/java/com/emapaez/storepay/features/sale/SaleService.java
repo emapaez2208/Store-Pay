@@ -61,10 +61,10 @@ public class SaleService implements ISaleService {
                 .totalPrice(cart.getTotalPrice())
                 .build();
 
-        List<SaleItemEntity> items = saleItemService.create(sale, cart.getItems());
-        sale.setItems(items);
-
         SaleEntity saved = repository.save(sale);
+
+        List<SaleItemEntity> items = saleItemService.create(saved, cart.getItems());
+        saved.setItems(items);
 
         return mapper.toDto(saved);
     }
