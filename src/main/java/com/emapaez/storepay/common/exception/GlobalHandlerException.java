@@ -9,7 +9,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.HttpMediaTypeException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,31 +55,6 @@ public class GlobalHandlerException {
                 .map(err -> err.getField() + ": " + err.getDefaultMessage())
                 .collect(Collectors.joining(", "));
         return buildResponse(HttpStatus.BAD_REQUEST, errors);
-    }
-
-//    @ExceptionHandler(LockedException.class)
-//    public ResponseEntity<ErrorMessage> handlerLockedAccount(LockedException ex) {
-//        return buildResponse(HttpStatus.FORBIDDEN, "Your account is Locked");
-//    }
-
-//    @ExceptionHandler(DisabledException.class)
-//    public ResponseEntity<ErrorMessage> handlerDisabledAccount(DisabledException ex) {
-//        return buildResponse(HttpStatus.FORBIDDEN, "Your account is disabled");
-//    }
-
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<ErrorMessage> handlerBadCredentials(BadCredentialsException ex){
-//        return buildResponse(HttpStatus.UNAUTHORIZED, "Authentication invalid, try again");
-//    }
-
-    @ExceptionHandler(AccountExpiredException.class)
-    public ResponseEntity<ErrorMessage> handlerAccountExpired(AccountExpiredException ex){
-        return buildResponse(HttpStatus.FORBIDDEN, "Your account has expired. Please contact support.");
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorMessage> handleAccessDenied(AccessDeniedException ex) {
-        return buildResponse(HttpStatus.FORBIDDEN, "You do not have permission to perform this action.");
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -142,6 +119,31 @@ public class GlobalHandlerException {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ErrorMessage> handlerForbidden(ForbiddenException ex){
         return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<ErrorMessage> handlerLockedAccount(LockedException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, "Your account is Locked");
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ErrorMessage> handlerDisabledAccount(DisabledException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, "Your account is disabled");
+    }
+
+    @ExceptionHandler(AccountExpiredException.class)
+    public ResponseEntity<ErrorMessage> handlerAccountExpired(AccountExpiredException ex){
+        return buildResponse(HttpStatus.FORBIDDEN, "Your account has expired. Please contact support.");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessage> handleAccessDenied(AccessDeniedException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, "You do not have permission to perform this action.");
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorMessage> handlerBadCredentials(BadCredentialsException ex){
+        return buildResponse(HttpStatus.UNAUTHORIZED, "Authentication invalid, try again");
     }
 
 }
