@@ -6,4 +6,5 @@ public class CredentialsNotFoundException extends EntityNotFoundCustomException 
     public CredentialsNotFoundException(String message) {
         super(message);
     }
+    public CredentialsNotFoundException(){super("Credentials not found");}
 }

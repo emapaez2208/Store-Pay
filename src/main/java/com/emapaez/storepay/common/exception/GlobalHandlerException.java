@@ -1,6 +1,7 @@
 package com.emapaez.storepay.common.exception;
 
 
+import com.emapaez.storepay.auth.credentials.exceptions.ForbiddenException;
 import com.emapaez.storepay.common.exception.dto.ErrorMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,6 +137,11 @@ public class GlobalHandlerException {
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorMessage> handlerHttpMediaNotSupported(HttpMediaTypeNotSupportedException ex){
         return buildResponse(HttpStatus.UNSUPPORTED_MEDIA_TYPE, ex.getMessage());
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorMessage> handlerForbidden(ForbiddenException ex){
+        return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
 }

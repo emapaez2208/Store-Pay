@@ -1,6 +1,8 @@
 package com.emapaez.storepay.features.user.domain.dto;
 
+import com.emapaez.storepay.auth.permissions.RolesEnum;
 import com.emapaez.storepay.common.model.Email;
+import com.emapaez.storepay.common.model.Password;
 import com.emapaez.storepay.common.validAnotation.ValidDni;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
@@ -22,9 +24,17 @@ public record UserRequest(@Schema(description = "The user's name, max length: 50
                           @Schema(description = "The user's Email.", example = "johndoe@email.com", requiredMode = Schema.RequiredMode.REQUIRED)
                           @NotNull(message = "The email cannot be null.")
                           Email email,
+                          @Schema(description = "The password to access the account, must have a valid format, " +
+                                  "using at least one lowercase, one uppercase and one number." +
+                                  "The length must be between 8 and 16 characters")
+                          @NotNull(message = "The password cannot be null.")
+                          Password password ,
                           @Schema(description = "The user's phone number.", example = "2235456789", requiredMode = Schema.RequiredMode.REQUIRED)
                           @NotNull(message = "The phone number cannot be null.")
                           @Positive(message = "The phone number must be a valid number.")
                           @Max(value = 99999999999L, message = "The phone number must have a maximum of 11 digits.")
-                          Long phoneNumber) {
+                          Long phoneNumber,
+                          @Schema(description = "The role can be OWNER or EMPLOYEE", example = "OWNER", requiredMode = Schema.RequiredMode.REQUIRED)
+                          @NotNull(message = "The role cannot be null")
+                          RolesEnum role) {
 }

@@ -44,6 +44,12 @@ public class UserController {
         return service.create(request);
     }
 
+    @PostMapping("/admin")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse createAdmin(@RequestBody @Valid UserRequest request){
+        return service.createAdmin(request);
+    }
+
     @DeleteMapping("/{externalId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID externalId){

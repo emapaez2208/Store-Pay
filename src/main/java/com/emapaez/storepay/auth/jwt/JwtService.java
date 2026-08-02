@@ -36,6 +36,7 @@ public class JwtService implements IJwtService{
         return extractClaim(token, Claims::getSubject);
     }
 
+    @Override
     public UUID extractExternalId(String token) {
         return extractClaim(
                 token,
