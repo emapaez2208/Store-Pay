@@ -1,4 +1,4 @@
-package com.emapaez.storepay.auth.credentials.exceptions;
+package com.emapaez.storepay.auth.exception;
 
 import com.emapaez.storepay.common.exception.BusinessException;
 

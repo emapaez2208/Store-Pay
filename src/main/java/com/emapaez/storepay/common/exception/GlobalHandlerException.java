@@ -1,7 +1,7 @@
 package com.emapaez.storepay.common.exception;
 
 
-import com.emapaez.storepay.auth.credentials.exceptions.ForbiddenException;
+import com.emapaez.storepay.auth.exception.ForbiddenException;
 import com.emapaez.storepay.common.exception.dto.ErrorMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,6 +144,11 @@ public class GlobalHandlerException {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorMessage> handlerBadCredentials(BadCredentialsException ex){
         return buildResponse(HttpStatus.UNAUTHORIZED, "Authentication invalid, try again");
+    }
+
+    @ExceptionHandler(GeneralTokenException.class)
+    public ResponseEntity<ErrorMessage> handlerGeneralToken(GeneralTokenException ex){
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
 }

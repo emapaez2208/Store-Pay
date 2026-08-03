@@ -52,6 +52,9 @@ public class CredentialsEntity implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
+    @Column(name = "refresh_token",length = 2048, unique = true)
+    private String refreshToken;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

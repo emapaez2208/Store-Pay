@@ -4,6 +4,7 @@ import com.emapaez.storepay.auth.credentials.CredentialsEntity;
 import com.emapaez.storepay.auth.credentials.CredentialsRepository;
 import com.emapaez.storepay.auth.credentials.exceptions.CredentialsNotFoundException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,9 @@ public class JwtService implements IJwtService{
 
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
+
+    @Value("${jwt.refresh-expiration}")
+    private Long refreshTokenExpiration;
 
     @Override
     public String extractUsername(String token) {
@@ -128,5 +132,26 @@ public class JwtService implements IJwtService{
     public boolean isTokenExpired(String token) {
         Date expiration = extractClaim(token, Claims::getExpiration);
         return expiration.before(new Date());
+    }
+
+    @Override
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "refresh");
+        return buildToken(claims, userDetails, refreshTokenExpiration);
+    }
+
+    @Override
+    public boolean validateRefreshToken(String refreshToken, UserDetails userDetails) {
+        try {
+            Claims claims = extractAllClaims(refreshToken);
+
+            return claims.getSubject().equals(userDetails.getUsername())
+                    && "refresh".equals(claims.get("type", String.class))
+                    && claims.getExpiration().after(new Date());
+
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 }

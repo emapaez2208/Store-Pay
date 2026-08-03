@@ -34,4 +34,8 @@ public interface IJwtService {
     SecretKey getSignInKey();
 
     boolean isTokenExpired(String token);
+
+    String generateRefreshToken(UserDetails userDetails);
+
+    boolean validateRefreshToken(String refreshToken, UserDetails userDetails);
 }

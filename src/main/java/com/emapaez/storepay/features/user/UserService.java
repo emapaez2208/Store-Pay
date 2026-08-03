@@ -3,7 +3,7 @@ package com.emapaez.storepay.features.user;
 import com.emapaez.storepay.auth.credentials.CredentialsEntity;
 import com.emapaez.storepay.auth.credentials.CredentialsRepository;
 import com.emapaez.storepay.auth.credentials.exceptions.CredentialsNotFoundException;
-import com.emapaez.storepay.auth.credentials.exceptions.ForbiddenException;
+import com.emapaez.storepay.auth.exception.ForbiddenException;
 import com.emapaez.storepay.auth.permissions.RoleRepository;
 import com.emapaez.storepay.auth.permissions.RolesEnum;
 import com.emapaez.storepay.auth.providers.AuthenticatedUserProvider;
