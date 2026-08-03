@@ -9,6 +9,7 @@ import com.emapaez.storepay.auth.dto.AuthRequest;
 import com.emapaez.storepay.auth.dto.AuthResponse;
 import com.emapaez.storepay.auth.exception.RefreshTokenExpiredException;
 import com.emapaez.storepay.auth.jwt.IJwtService;
+import com.emapaez.storepay.auth.providers.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ public class AuthService {
     private final CredentialsRepository credentialsRepository;
     private final AuthenticationManager authenticationManager;
     private final IJwtService jwtService;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
 
     public UserDetails authenticate(AuthRequest input){
         authenticationManager.authenticate(
@@ -45,8 +47,8 @@ public class AuthService {
     }
 
     @Transactional
-    public void logoutRefresh(String refreshToken){
-        String username = jwtService.extractUsername(refreshToken);
+    public void logoutRefresh(){
+        String username = authenticatedUserProvider.getCurrentUser().username();
 
         CredentialsEntity user = credentialsRepository.findByUsername(username)
                 .orElseThrow(() -> new CredentialsNotFoundException("User not found"));

@@ -45,7 +45,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleUnexpected(Exception ex){
-        log.error("Unexpected error", ex);  /// msj para saber que esta pasando
+        log.error("Unexpected error", ex);
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred on the server.");
     }
 

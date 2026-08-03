@@ -49,7 +49,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@RequestBody RefreshTokenRequest request){
-        authService.logoutRefresh(request.refreshToken());
+    public void logout(){
+        authService.logoutRefresh();
     }
 }
